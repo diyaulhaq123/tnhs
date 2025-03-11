@@ -1,4 +1,4 @@
-@include('layouts.dashboard.header')
+@include('layouts.dashboard_2.header')
 
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
@@ -11,7 +11,7 @@
                       <!-- Logo -->
                       <div class="app-brand justify-content-center mb-4 mt-2">
                         <a href="javascript:void(0)" class="app-brand-link gap-2">
-                            <img src="{{ asset('assets/img/nhs-logo.png') }}" class="rounded-circle logo" width="80" height="" alt=""> 
+                            <img src="{{ asset('assets/img/nhs-logo.png') }}" class="rounded-circle logo" width="80" height="" alt="">
                           <span class="app-brand-text demo text-body fw-bold ms-1">Nigeria Hypertensive Society</span>
                         </a>
                       </div>
@@ -132,5 +132,5 @@
     </div>
 </div>
 
-@include('layouts.dashboard.footer')
+@include('layouts.dashboard_2.footer')
 
