@@ -46,6 +46,11 @@
     <!-- Page -->
     <link rel="stylesheet" href="../../assets/vendor/css/pages/page-misc.css" />
 
+    <style>
+        body {
+            zoom: 90%;
+        }
+    </style>
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
