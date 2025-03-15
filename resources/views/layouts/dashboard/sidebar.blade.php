@@ -9,7 +9,7 @@
             <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
               <a href="index.html" class="app-brand-link gap-2">
                 <span class="app-brand-logo demo">
-                  <img src="{{ asset('assets/img/nhs-logo.png') }}" width="100%" height="100%" class="rounded-circle" >
+                  <img src="{{ asset('assets/img/nhs-logo.png') }}?v={{ time() }}" width="100%" height="100%" class="rounded-circle" >
                 </span>
                 {{-- N.H.S --}}
                 <span class="app-brand-text demo menu-text fw-bold"> NIGERIAN HYPERTENSIVE SOCIETY</span>

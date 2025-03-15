@@ -7,7 +7,7 @@
           <div class="app-brand demo">
             <a href="javascriptvoid(0):" class="app-brand-link">
               <span class="app-brand-logo demo">
-                <img width="100%" height="100%" class="rounded-circle"  src="{{ asset('assets/img/nhs-logo.png') }}"/>
+                <img width="100%" height="100%" class="rounded-circle"  src="{{ asset('assets/img/nhs-logo.png') }}?v={{ time() }}"/>
               </span>
               <span class="app-brand-text demo menu-text fw-bold">NHS</span>
             </a>

@@ -7,10 +7,10 @@ Portal Settings
 
 <div class="p-3 m-4">
     <div class="row">
-        <div class="col-3">
+        <div class="col-lg-4 col-md-4 col-sm-12">
             <div class="card p-2">
                 <div class="row justify-content-center">
-                    <img src="{{ $settings->logo ? $settings->logo : asset('assets/img/nhs-logo.png') }}" alt="Logo" width="100">
+                    <img src="{{ $settings->logo ? $settings->logo : asset('assets/img/nhs-logo.png') }}?v={{ time() }}" alt="Logo" width="100">
                 </div>
                 <div class="row">
                     <div class="col-12 my-2">
@@ -25,7 +25,7 @@ Portal Settings
                 </div>
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-lg-8 col-md-8 col-sm-12">
             <div class="card p-5">
                 <form action="{{ route('settings.update', $settings->id) }}" method="post">
                     @csrf

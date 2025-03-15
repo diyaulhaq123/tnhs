@@ -129,7 +129,7 @@ u + .em_body .em_full_wrap { width:100% !important; width:100vw !important;}
   </tr>
   <!-- logo image here  -->
   <tr>
-    <td valign="top" align="center"><img src="{{ asset('assets/img/nhs-logo.png') }}" width="120px" alt="" style="display:block; max-width:150px; border-radius: 100px" border="0" class="em_img" /></td>
+    <td valign="top" align="center"><img src="{{ asset('assets/img/nhs-logo.png') }}?v={{ time() }}" width="120px" alt="" style="display:block; max-width:150px; border-radius: 100px" border="0" class="em_img" /></td>
   </tr>
    <tr>
     <td height="30" style="height:30px;" class="em_h20">&nbsp;</td>

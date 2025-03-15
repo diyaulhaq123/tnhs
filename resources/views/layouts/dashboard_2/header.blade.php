@@ -15,7 +15,7 @@
     <title>Nigerian Hypertension Society</title>
     <meta name="description" content="" />
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/nhs-logo.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/nhs-logo.png') }}?v={{ time() }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
