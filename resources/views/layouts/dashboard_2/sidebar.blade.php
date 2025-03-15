@@ -102,12 +102,6 @@
                 </a>
             </li>
 
-            <li class="menu-item">
-                <a href="#" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-cash"></i>
-                    <div >My Payments</div>
-                </a>
-            </li>
 
             {{-- <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -152,13 +146,18 @@
                 </a>
                 <ul class="menu-sub">
                   <li class="menu-item">
-                    <a href="{{ route('role') }}" class="menu-link">
+                    <a href="{{ route('roles.index') }}" class="menu-link">
                       <div >Roles</div>
                     </a>
                   </li>
                   <li class="menu-item">
-                    <a href="{{ route('permission') }}" class="menu-link">
+                    <a href="{{ route('permissions.index') }}" class="menu-link">
                       <div >Permissions</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href="{{ route('manage.permission') }}" class="menu-link">
+                      <div >Manage Permissions</div>
                     </a>
                   </li>
                 </ul>

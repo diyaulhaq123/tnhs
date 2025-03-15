@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\MemberTypeController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Member\MemberController;
 
@@ -50,6 +52,8 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::resource('/member_types', MemberTypeController::class);
     Route::resource('/settings', SettingsController::class);
+    Route::resource('/permissions', PermissionController::class);
+    Route::resource('/roles', RoleController::class);
 
 });
 
@@ -91,11 +95,11 @@ Route::middleware(['auth','membership','verify.profile'])->group(function () {
             Route::get('event-edit/{id}','edit')->name('edit.event');
             Route::put('update-event/{id}','updateEvent')->name('update.event');
 
-            Route::get('/roles','role')->name('role');
-            Route::post('/role/add', 'createRole')->name('create.role');
+            // Route::get('/roles','role')->name('role');
+            // Route::post('/role/add', 'createRole')->name('create.role');
 
-            Route::get('/permissions','permissions')->name('permission');
-            Route::post('/permission/add', 'createPermission')->name('create.permission');
+            Route::get('/manage-permissions','permissions')->name('manage.permission');
+            // Route::post('/permission/add', 'createPermission')->name('create.permission');
             Route::post('/assign/permission', 'assignPermission')->name('assign.permission');
             Route::post('/assign/role', 'assignRoleToUser')->name('assign.role');
         });

@@ -12,7 +12,7 @@
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>Nigerian Hypertensive Society</title>
+    <title>Nigerian Hypertension Society</title>
     <meta name="description" content="" />
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/nhs-logo.png') }}" />

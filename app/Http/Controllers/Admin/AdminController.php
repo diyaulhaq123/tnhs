@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use Exception;
+use App\Models\Lga;
+use App\Models\User;
 use App\Models\Event;
+use App\Models\State;
 use App\Models\MemberType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,17 +57,6 @@ class AdminController extends Controller
     }
 
     public function assignPermission(Request $request){
-        // $request->validate(['role' => 'required', 'permission' => 'required']);
-        // try{
-        //     DB::beginTransaction();
-        //     DB::commit();
-        //     $this->adminRepo->assignPermission($request->role, $request->permission);
-        //     return redirect()->back()->with('success', 'Permission assigned');
-        // }catch(\Exception $e){
-        //     DB::rollback();
-        //     return redirect()->back()->with('error', 'Permission not assigned');
-        //     Log::error($e->getMessage());
-        // }
         foreach ($request->permissions as $roleId => $permissions) {
             $role = Role::find($roleId);
             if ($role) {
@@ -136,7 +128,9 @@ class AdminController extends Controller
 
     public function profile(Request $request){
         $profile = auth()->user()->profile;
-        return view('nhs.profile',compact('profile'));
+        $states = State::get();
+        $lgas = Lga::get();
+        return view('nhs.profile',compact('profile','states','lgas'));
     }
 
     public function changePassword(Request $request){
@@ -175,9 +169,11 @@ class AdminController extends Controller
     public function createEvent(CreateEventRequest $request){
         $data = $request->validated();
         try{
-            DB::beginTransaction();
-            DB::commit();
-            $this->eventRepo->create($data);
+            // DB::beginTransaction();
+            // $event = $this->eventRepo->create($data);
+            // DB::commit();
+            $event = Event::find(4);
+            $this->sendNotification($event->id);
             return redirect()->back()->with('success', 'Even was added');
         }catch(\Exception $e){
             DB::rollback();
@@ -206,16 +202,20 @@ class AdminController extends Controller
         }
     }
 
-    public function sendNotification(Request $request){
-        $request->validate(['message' => 'required']);
-        $recepients = $this->memberRepo->getMembers();
-        $message = $request->message;
-        try{
+    public function sendNotification($eventId){
+        try {
+            $recepients = User::where('type', 2)->get(); // Fetch users by type
+            if ($recepients->isEmpty()) {
+                return; // No users to notify
+            }
+
+            $event = Event::find($eventId); // Get event details
+            $message = "This is to notify members that there will be an event on day: " . $event->date .' to day: '.$event->end_date. ' from: '. $event->start_time. ' to: ' .$event->end_time ;
+
             Notification::send($recepients, new EventNotification($message));
-        return redirect()->back()->with('success', 'Notification was sent');
-        }catch(\Exception $e){
-            return redirect()->back()->with('error', 'Notification was not sent');
-            Log::error($e->getMessage());
+
+        } catch (Exception $e) {
+            Log::error('Notification error: ' . 'file: '. $e->getFile().' line: '.$e->getLine().' error: '.$e->getMessage());
         }
     }
 

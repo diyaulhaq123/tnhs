@@ -26,6 +26,8 @@ class CreateEventRequest extends FormRequest
             'description' => 'required',
             'date' => 'required',
             'end_date' => 'required',
+            'start_time' => 'nullable',
+            'end_time' => 'nullable',
             'status' => 'nullable',
             'amount' => 'required|integer',
             'member_type_id' => 'required|integer',

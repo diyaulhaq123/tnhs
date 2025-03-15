@@ -17,7 +17,8 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return view('nhs.notifications.index');
+        $notifications = Notification::get();
+        return view('nhs.notifications.index', compact('notifications'));
     }
 
     /**

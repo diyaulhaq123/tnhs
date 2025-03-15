@@ -219,11 +219,11 @@ Profile
                         </div>
                         <div class="col-lg-4 col-sm-12 my-2">
                             <label for="">State</label>
-                            <select class="form-control form-select" name="state" id="state">
+                            <select class="form-control form-select" name="state" id="state_id">
                                 <option value="">State</option>
-                                {{-- @foreach ($states as $row)
+                                @foreach ($states as $row)
                                 <option value="{{ $row->id }}" @if($profile && $profile->state == $row->id ) {!! 'selected' !!}  @endif >{{ $row->name }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                             @error('state')
                             <span class="text-danger" style="font-size:12px">{{ $message }}</span>
@@ -231,11 +231,11 @@ Profile
                         </div>
                         <div class="col-lg-4 col-sm-12 my-2">
                             <label for="">LGA</label>
-                            <select class="form-control form-select" name="lga" id="lga">
+                            <select class="form-control form-select" name="lga" id="lga_id">
                                 <option value="">Lga</option>
-                                {{-- @foreach ($lgas as $row)
+                                @foreach ($lgas as $row)
                                 <option value="{{ $row->id }}" @if($profile && $profile->lga == $row->id ) {!! 'selected' !!}  @endif >{{ $row->name }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                             @error('lga')
                             <span class="text-danger" style="font-size:12px">{{ $message }}</span>

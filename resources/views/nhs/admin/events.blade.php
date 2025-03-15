@@ -16,7 +16,7 @@ Events
     <div class="col-6">
         <h5 class="text-uppercase">Events</h5>
     </div>
-    @can('add_event')
+    @can('create_event')
     <div class="col-6">
         <button class="btn btn-primary" style="float: right" type="button"
         data-bs-toggle="modal"
@@ -147,6 +147,16 @@ Events
                 <div class="col-md-6 col-sm-12 mb-0">
                     <label for="date" class="form-label">Event End Date</label>
                     <input type="date" name="end_date" id="end_date" class="form-control" value="{{ old('end_date') }}" />
+                </div>
+
+                <div class="col-md-6 col-sm-12 mb-0">
+                    <label for="time" class="form-label">Start Time</label>
+                    <input type="text" name="start_time" id="start_time" class="form-control" placeholder="Format: 00:00 PM" value="{{ old('start_time') }}" />
+                  </div>
+
+                  <div class="col-md-6 col-sm-12 mb-0">
+                      <label for="date" class="form-label">End Time</label>
+                      <input type="text" name="end_time" id="end_time" class="form-control" placeholder="Format: 00:00 PM" value="{{ old('end_time') }}" />
                   </div>
 
                 <div class="col-md-6 col-sm-12 mb-0">
