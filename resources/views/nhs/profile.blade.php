@@ -50,10 +50,12 @@ Profile
                   <span class="fw-medium me-1">Status:</span>
                   {!! auth()->user()->status == 1 ? '<span class="badge bg-label-success">Active</span>' : '<span class="badge bg-label-danger">In-active</span>' !!}
                 </li>
+                @can('membership_expire')
                 <li class="mb-2 pt-1">
                   <span class="fw-medium me-1">Membership:</span>
                   <span class="">{{ auth()->user()->memberType->name }}</span>
                 </li>
+                @endcan
                 <li class="mb-2 pt-1">
                   <span class="fw-medium me-1">Contact:</span>
                   <span>{{ $profile ? $profile->phone_number : 'NA' }}</span>
@@ -62,20 +64,22 @@ Profile
                   <span class="fw-medium me-1">Nationality:</span>
                   <span>{{ $profile ? $profile->nationality : 'NA' }}</span>
                 </li>
+                @can('membership_expire')
                 <li class="pt-1">
                   <span class="fw-medium me-1">Membership Expiry Date:</span>
                   <span class="badge bg-primary">
                     {{ auth()->user()->membershipPayment ? auth()->user()->membershipPayment->created_at->addYear() : 'NA' }}
                   </span>
                 </li>
+                @endcan
               </ul>
-              @if (auth()->user()->type == 2)
+              {{-- @if (auth()->user()->type == 2)
               <div class="d-flex justify-content-center">
                 @if (auth()->user()->status == 0)
                 <a href="javascript:void(0);" class="btn btn-label-danger suspend-user waves-effect">Suspended</a>
                 @endif
               </div>
-              @endif
+              @endif --}}
             </div>
           </div>
         </div>
@@ -83,7 +87,7 @@ Profile
 
     <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12">
         @can('membership_expire')
-        @if(date('Y-m-d') >= auth()->user()->created_at->addYears(1)->format('Y-m-d'))
+        @if(date('Y-m-d') >= auth()->user()->membershipPayment->created_at->addYears(1)->format('Y-m-d'))
         <div class="alert alert-danger">Your membership package has expired please
             <button class="btn btn-primary btn-sm">Click </button> to renew membership
         </div>

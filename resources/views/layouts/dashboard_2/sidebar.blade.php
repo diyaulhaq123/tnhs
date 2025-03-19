@@ -22,11 +22,22 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboards -->
+
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text fw-bold text-dark">Dashboard</span>
+            </li>
+
             <li class="menu-item">
+                <a href="{{ route('dashboards')}}" class="menu-link">
+                    <i class="menu-icon tf-icons ti ti-smart-home"></i>
+                  <div>Dashboard</div>
+                </a>
+            </li>
+
+            {{-- <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
                 <div data-i18n="Dashboards">Dashboards</div>
-                {{-- <div class="badge bg-primary rounded-pill ms-auto">5</div> --}}
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
@@ -35,12 +46,13 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li> --}}
 
+            @canany(['home_member','home_membership_type'])
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text fw-bold text-dark">Users & Members</span>
             </li>
-            {{-- users --}}
+
             <li class="menu-item">
                 <a href="{{ route('user.list') }}" class="menu-link">
                   <i class="menu-icon tf-icons ti ti-users"></i>
@@ -54,7 +66,9 @@
                   <div>Membership Types</div>
                 </a>
             </li>
+            @endcanany
 
+            @can('home_event')
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text fw-bold text-dark">Events</span>
             </li>
@@ -71,7 +85,10 @@
                     <div >Past Events</div>
                 </a>
             </li>
+            @endcan
 
+
+            @can('home_payment')
             {{-- <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-calendar-event"></i>
@@ -91,7 +108,6 @@
               </ul>
             </li> --}}
 
-
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text fw-bold text-dark">Finances & Payments</span>
             </li>
@@ -101,6 +117,7 @@
                   <div>Payments</div>
                 </a>
             </li>
+            @endcan
 
 
             {{-- <li class="menu-item">
@@ -122,7 +139,7 @@
               </ul>
             </li> --}}
 
-
+            @can('home_notification')
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text fw-bold text-dark">Notifications & Reminders</span>
             </li>
@@ -133,7 +150,9 @@
                   <div>Notifications</div>
                 </a>
             </li>
+            @endcan
 
+            @can('home_settings')
 
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text fw-bold text-dark">Roles & Permissions</span>
@@ -168,7 +187,9 @@
                   <i class="menu-icon tf-icons ti ti-settings"></i>
                   <div>Settings</div>
                 </a>
-              </li>
+            </li>
+
+            @endcan
 
             {{-- <li class="menu-item">
               <a href="javascript:void(0)" class="menu-link">

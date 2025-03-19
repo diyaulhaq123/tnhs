@@ -7,7 +7,7 @@ Portal Settings
 
 <div class="p-3 m-4">
     <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
             <div class="card p-2">
                 <div class="row justify-content-center">
                     <img src="{{ $settings->logo ? $settings->logo : asset('assets/img/nhs-logo.png') }}?v={{ time() }}" alt="Logo" width="100">
@@ -25,32 +25,32 @@ Portal Settings
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-12">
+        <div class="col-lg-8 col-md-8 col-sm-12 mt-2">
             <div class="card p-5">
                 <form action="{{ route('settings.update', $settings->id) }}" method="post">
                     @csrf
                     @method('put')
                     <div class="row">
-                        <div class="col-6 mb-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
                             <label for="">Name/Title</label>
                             <input type="text" class="form-control" name="name" id="name" value="{{ $settings->name }}">
                         </div>
-                        <div class="col-6 mb-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
                             <label for="">Phone Number</label>
                             <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ $settings->phone_number }}">
                         </div>
 
-                        <div class="col-6 mb-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
                             <label for="">Description</label>
                             <textarea cols="30" rows="5" class="form-control" name="description" id="description" >{{ $settings->description }}</textarea>
                         </div>
 
-                        <div class="col-6 mb-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
                             <label for="">Address</label>
                             <textarea cols="30" rows="5" class="form-control" name="address" id="address" >{{ $settings->address }}</textarea>
                         </div>
 
-                        <div class="col-6 mb-2 ">
+                        <div class="col-lg-6 col-md-6 col-sm-12 mb-2 ">
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
 

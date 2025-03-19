@@ -5,9 +5,11 @@ Reminder
 
 @section('page_content')
 <div class="row">
+    @can('create_notification')
     <div class="" align='right' style="float:right">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTop">Add new reminder <i class="ti ti-pin"></i></button>
     </div>
+    @endcan
 </div>
 <div class="row justify-content-center">
         <div>Events reminders</div>

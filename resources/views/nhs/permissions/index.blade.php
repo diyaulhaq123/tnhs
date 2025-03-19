@@ -42,13 +42,13 @@
                                     <td>
                                         <a href="{{ route('permissions.show', $row) }}" class="btn btn-info btn-xs"><i class="ti ti-eye"></i></a>
                                         <a href="{{ route('permissions.edit', $row) }}" class="btn btn-warning btn-xs"><i class="ti ti-edit"></i></a>
-                                        {{-- @can('delete_permission') --}}
+                                        @can('delete_permission')
                                         <form action="{{ route('permissions.destroy', $row) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-xs delete"><i class="ti ti-trash"></i></button>
                                         </form>
-                                        {{-- @endcan --}}
+                                        @endcan
                                     </td>
                                 </tr>
                                 @endforeach
