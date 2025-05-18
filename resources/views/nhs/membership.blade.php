@@ -111,10 +111,11 @@
                         <input type="hidden" name="email" id="email" value="{{ auth()->user()->email }}">
                         <input type="hidden" name="payment_type_id" id="payment_type_id" value="1">
                         <div class="row">
-                            <button type="submit" class="btn btn-success waves-effect waves-light">
+                            <button type="submit" class="btn btn-success waves-effect waves-light mb-2">
                                 <span class="me-2">Proceed with Payment</span>
                                 <i class="ti ti-arrow-right scaleX-n1-rtl"></i>
                             </button>
+                            <a href="{{ route('dashboards') }}" class="btn btn-info mt-2">Back</a>
                         </div>
                     </form>
                     </div>
