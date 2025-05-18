@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
@@ -50,13 +51,13 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the memberType associated with the User
+     * Get the memberType that owns the User
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return BelongsTo
      */
-    public function memberType(): HasOne
+    public function memberType(): BelongsTo
     {
-        return $this->hasOne(MemberType::class, 'id', 'type');
+        return $this->belongsTo(MemberType::class);
     }
 
     /**

@@ -139,7 +139,7 @@
               </ul>
             </li> --}}
 
-            @can('home_notification')
+            {{-- @can('home_notification')
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text fw-bold text-dark">Notifications & Reminders</span>
             </li>
@@ -150,7 +150,7 @@
                   <div>Notifications</div>
                 </a>
             </li>
-            @endcan
+            @endcan --}}
 
             @can('home_settings')
 

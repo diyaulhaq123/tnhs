@@ -21,16 +21,18 @@ Payments
                             <th>#</th>
                             <th>Payment Type</th>
                             <th>Payer</th>
+                            <th>Reference NO</th>
                             <th>Amount</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($payments as $index => $row)
+                        @foreach ($payments as $index => $row)
                         <tr>
                             <td>{{ $index+1 }}</td>
                             <td>{{ $row->paymentType() ?? 'Na' }}</td>
                             <td>{{ $row->user->email ?? 'NA' }}</td>
+                            <td>{{ $row->reference ?? 'NA' }}</td>
                             <td><del>N</del>{{ number_format($row->amount, 2) ?? '0.00' }}</td>
                             <td>
                                 <div class="btn-group">
@@ -38,11 +40,9 @@ Payments
                                     {{-- <button class="btn btn-danger btn-xs"><i class="ti ti-trash"></i></button> --}}
                                 </div>
                             </td>
-                            @empty
-                            <td colspan="5" class="text-center">No Payments found</td>
                         </tr>
 
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

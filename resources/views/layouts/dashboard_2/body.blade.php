@@ -12,16 +12,6 @@
           </div>
 
           <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-            <!-- Search -->
-            {{-- <div class="navbar-nav align-items-center">
-              <div class="nav-item navbar-search-wrapper mb-0">
-                <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-                  <i class="ti ti-search ti-md me-2"></i>
-                  <span class="d-none d-md-inline-block text-muted">Search (Ctrl+/)</span>
-                </a>
-              </div>
-            </div> --}}
-            <!-- /Search -->
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
 
@@ -59,7 +49,7 @@
                   data-bs-auto-close="outside"
                   aria-expanded="false">
                   <i class="ti ti-bell ti-md"></i>
-                  <span class="badge bg-danger rounded-pill badge-notifications">5</span>
+                  {{-- <span class="badge bg-danger rounded-pill badge-notifications">5</span> --}}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end py-0">
                   <li class="dropdown-menu-header border-bottom">
@@ -99,12 +89,16 @@
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="{!! auth()->user()->profile->avatar ? auth()->user()->profile->avatar : '../../assets/avatar/dummy.jpeg' !!}" alt class="h-auto rounded-circle" />
+                            <img src="{!! auth()->user()->profile ? auth()->user()->profile->avatar : '../../assets/avatar/dummy.jpeg' !!}" alt class="h-auto rounded-circle" />
                           </div>
                         </div>
                         <div class="flex-grow-1">
                           <span class="fw-medium d-block">{{ ucfirst(auth()->user()->name) }}</span>
-                          <small class="text-muted">{{ auth()->user()->memberType->name }}</small>
+                          @if(auth()->user()->type == 2)
+                          <small class="text-muted">{{ auth()->user()->memberType->name ?? 'Member' }}</small>
+                          @else
+                          <small class="text-muted">{{ 'Admin' }}</small>
+                          @endif
                         </div>
                       </div>
                     </a>

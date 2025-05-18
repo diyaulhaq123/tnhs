@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Models\Lga;
 use App\Models\User;
 use App\Models\State;
+use App\Models\Payment;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,16 @@ class MemberController extends Controller
         $profile = auth()->user()->profile;
         // $events = $this->eventRepo->getByType(auth()->user()->type);
         $events = $this->eventRepo->get();
+        if(auth()->user()->type == 2 && auth()->user()->status != 1){
+            $membership = Payment::where([
+                'payment_type_id' => 1,
+                'remark' => 'success',
+                'user_id' => auth()->user()->id
+                ])->first();
+            if($membership){
+                User::find(auth()->user()->id)->update(['status' => 1]);
+            }
+        }
         return view('nhs.users.dashboard',compact('profile','events'));
     }
 
@@ -61,19 +72,34 @@ class MemberController extends Controller
     }
 
     public function updateProfile(UpdateProfileRequest $request){
+        $data = $request->validated();
         try{
                 DB::beginTransaction();
                 DB::commit();
                 if($request->has('user_id')){
-                    $this->memberRepo->updateProfile($request->user_id,$request->validated());
+                    $profile = Profile::where('user_id', $request->user_id);
+                    if($profile){
+                        $this->memberRepo->updateProfile($request->user_id,$request->validated());
+                    }else{
+                        $data['user_id'] = $request->user_id;
+                        $this->memberRepo->createProfile($data);
+                    }
                 }else{
-                    $this->memberRepo->updateProfile(auth()->user()->id,$request->validated());
+                    if(auth()->user()->profile){
+                        $this->memberRepo->updateProfile(auth()->user()->id,$request->validated());
+                    }else{
+                        $data['user_id'] = auth()->user()->id;
+                        $this->memberRepo->createProfile($data);
+                    }
                 }
                 return redirect()->back()->with('success', 'Profile updated!');
         }catch(\Exception $e){
             DB::rollback();
-            return redirect()->back()->with('error', 'Error updating profile');
-            Log::error($e->getMessage());
+            if($e->getCode() == '23000'){
+                return redirect()->back()->with('error', 'Duplicate entry not allowed');
+            }
+            return redirect()->back()->with('error', 'Error updating profile'.'error: '. $e->getMessage().', file: '. $e->getFile().', line: '. $e->getLine());
+            Log::error('error: '. $e->getMessage().', file: '. $e->getFile().', line: '. $e->getLine());
         }
     }
 
@@ -89,7 +115,11 @@ class MemberController extends Controller
             $filename = Str::random(25);
             $avatar = '/avatars/'.$filename.'.'.$ext;
             Storage::disk('public')->put($avatar, $content);
-            $this->memberRepo->addAvatar(auth()->user()->profile->id, $avatar);
+            // if(empty(auth()->user()->profile)){
+                $this->memberRepo->addAvatar(auth()->user()->profile->id, $avatar);
+            // }else{
+            //     return redirect()->back()->with('error', 'please upload profile before uploading avatar');
+            // }
             return redirect()->back()->with('success', 'Avatar was added');
         }catch(\Exception $e){
             return redirect()->back()->with('error', 'Could not add avatar');
@@ -152,13 +182,17 @@ class MemberController extends Controller
         $this->payRepo->payEvent([
                 'user_id' => auth()->user()->id,
                 'payment_type_id' => $payment_type_id['payment_type_id'],
-                'event_id' => $event['event_id'],
+                'event_id' => $event['event_id'] ?? Null,
                 'amount' => $amount,
                 'reference' => $paymentDetails['data']['reference'],
                 'remark' =>  $paymentDetails['data']['status']
             ]);
+            // if($paymentDetails['data']['status'] == 'success'){
+            //     $type = auth()->user()->memberType->id ?? '2';
+            //     $this->memberRepo->updateUser(auth()->user()->id, ['status'=> 1, 'member_type_id' => $type ]);
+            // }
 
-        return redirect()->back()->with('success', 'transaction successful');
+        return redirect(route('dashboards'))->with('success', 'transaction successful');
         // Now you have the payment details,
         // you can store the authorization_code in your db to allow for recurrent subscriptions
         // you can then redirect or do whatever you want
@@ -184,6 +218,12 @@ class MemberController extends Controller
     public function getLgas(Request $request){
         $lgas = Lga::select('name','id','state_id')->where('state_id', $request->state_id)->get();
         return json_encode($lgas);
+    }
+
+
+    public function eventTicket(Request $request){
+        $event_payment = Payment::with('event')->where('event_id', $request->event_id)->firstOrFail();
+        return view('users.event_ticket', compact('event_payment'));
     }
 
 

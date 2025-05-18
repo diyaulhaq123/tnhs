@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -27,6 +28,9 @@ class GuestController extends Controller
 
     public function membership(){
         $memberships = $this->memberRepo->getMemberTypes();
+        if(empty(auth()->user()->memberType)){
+            return redirect('404')->with('error', 'Payment Type not found!');
+        }
         return view('nhs.membership', compact('memberships'));
     }
 
@@ -54,6 +58,7 @@ class GuestController extends Controller
         try {
             $metadata = [
                 'payment_type_id' => 1,
+                // 'event_id' => $request->event_id ?? Null,
             ];
 
             $authorizationUrl = Paystack::getAuthorizationUrl([
@@ -81,20 +86,26 @@ class GuestController extends Controller
         $paymentDetails = Paystack::getPaymentData();
         $amount = $paymentDetails['data']['amount']/100;
         $pay_type = $paymentDetails['data']['metadata'];
-        $this->payRepo->payEvent([
-                'user_id' => auth()->user()->id,
-                'payment_type_id' => $pay_type['payment_type_id'],
-                'amount' => $amount,
-                'reference' => $paymentDetails['data']['reference'],
-                'remark' =>  $paymentDetails['data']['status'],
-                'event_id' => Null
-            ]);
-            if($paymentDetails['data']['status'] == 'success'){
-                $type = auth()->user()->memberType->id;
-                $this->memberRepo->updateUser(auth()->user()->id, ['status'=> 1, 'type' => $type ]);
+        // $event = $paymentDetails['data']['metadata'];
+        try{
+            $this->payRepo->payEvent([
+                    'user_id' => auth()->user()->id,
+                    'payment_type_id' => $pay_type['payment_type_id'],
+                    'amount' => $amount,
+                    'reference' => $paymentDetails['data']['reference'],
+                    'remark' =>  $paymentDetails['data']['status'],
+                ]);
+                if($paymentDetails['data']['status'] == 'success'){
+                    $type = auth()->user()->memberType->id ?? '2';
+                    $this->memberRepo->updateUser(auth()->user()->id, ['status'=> 1, 'member_type_id' => $type ]);
+                }
+                return redirect(route('dashboards'))->with('success', 'Payment successful');
+            }catch(Exception $e){
+                Log::error($e->getMessage().' in file: '. $e->getFile().' on line: '. $e->getLine());
+                return redirect()->back()->with('error', 'An error occured');
             }
 
-        return redirect(route('dashboards'))->with('success', 'Payment successful');
+
     }
 
 

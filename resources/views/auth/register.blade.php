@@ -21,27 +21,27 @@
                       <form id="formAuthentication" class="mb-3" method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="email" class="form-label">Name</label>
+                            <label for="name" class="form-label">Name</label>
                             <input
                               type="text"
                               class="form-control"
                               id="name"
                               name="name"
                               value="{{ old('name') }}"
-                              placeholder="Enter your email or username"
+                              placeholder="Enter your name"
                               autofocus />
                               @error('name')
                               <span style="font-size:13px" class="mt-2 text-danger" >{{$message}}</span>
                               @enderror
                         </div>
                         <div class="mb-3">
-                          <label for="email" class="form-label">Email</label>
+                          <label for="" class="form-label">Email</label>
                           <input
                             type="text"
                             class="form-control"
                             id="email"
                             name="email"
-                            value=""
+                            value="{{ old('email') }}"
                             placeholder="Enter email"
                             autofocus />
                             @error('email')
@@ -49,7 +49,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="type" class="form-label">Membership Type</label>
                             <select
                               class="form-control form-select"
@@ -65,17 +65,16 @@
                               @error('type')
                               <span style="font-size:13px" class="mt-2 text-danger" >{{$message}}</span>
                               @enderror
-                          </div>
+                          </div> --}}
 
                         <div class="mb-3 form-password-toggle">
                           <div class="d-flex justify-content-between">
-                            <label class="form-label" for="password">Password</label>
+                            <label class="form-label" for="">Password</label>
                           </div>
                           <div class="input-group input-group-merge">
                             <input
                               type="password"
                               id="password"
-                              value=""
                               class="form-control"
                               name="password"
                               placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
@@ -92,10 +91,8 @@
                             </div>
                             <div class="input-group input-group-merge">
                               <input
-                                type="password_confirmation"
-                                id="password"
-                                value=""
-                                type="password"
+                                 type="password"
+                                id="password_confirmation"
                                 class="form-control"
                                 name="password_confirmation"
                                 placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"

@@ -30,14 +30,7 @@ User/Member List
                         <td>{!! $row->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">In-active</span>'  !!}</td>
                         <td>
                             <div class="btn-group">
-                                <form action="{{ route('delete.members') }}" method="post">
-                                    @csrf @method('delete')
-                                    <input type="hidden" name="id" id="id" value="{{ $row->id }}">
-                                    {{-- <div class="btn-group"> --}}
-                                        <a href="{{ route('user.show', $row->id) }}" type="button" class="btn btn-primary btn-xs"><i class="ti ti-eye"></i></a>
-                                        <button type="submit" class="btn btn-danger btn-xs delete"><i class="ti ti-trash"></i></button>
-                                    {{-- </div> --}}
-                                </form>
+                                <a href="{{ route('user.show', $row->id) }}" type="button" class="btn btn-primary btn-xs"><i class="ti ti-eye"></i></a>
                             </div>
                         </td>
                     </tr>

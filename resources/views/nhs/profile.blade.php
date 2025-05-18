@@ -11,18 +11,25 @@ Profile
         <!-- User Card -->
         <div class="card mb-4">
             <div class="card-header my-0 pb-0">
-                <button class="btn btn-primary btn-xs" data-bs-target="#smallModal" data-bs-toggle="modal" style="float:right">Add Avatar <i class="ti ti-upload"></i></button>
+                @if (auth()->user()->type == 2)
+                    @if (!empty(auth()->user()->profile))
+                    <button class="btn btn-primary btn-xs" data-bs-target="#smallModal" data-bs-toggle="modal" style="float:right">Add Avatar <i class="ti ti-upload"></i></button>
+                    @endif
+                @endif
             </div>
           <div class="card-body">
             <div class="user-avatar-section">
               <div class="d-flex align-items-center flex-column">
-                <img class="img-fluid rounded mb-3 pt-1 mt-4" src="{{ auth()->user()->profile->avatar ? auth()->user()->profile->avatar : '../../assets/avatar/dummy.jpeg' }}" height="100" width="100" alt="User avatar">
+                <img class="img-fluid rounded mb-3 pt-1 mt-4" src="{{ auth()->user()->profile ? auth()->user()->profile->avatar : '../../assets/avatar/dummy.jpeg' }}" height="100" width="100" alt="User avatar">
                 <div class="user-info text-center">
                   <h5 class="mb-2 text-uppercase">{{ auth()->user()->profile ? auth()->user()->profile->last_name.' '.auth()->user()->profile->first_name : auth()->user()->name }}</h5>
-                  <span class="badge bg-label-info mt-1 text-uppercase">{{ auth()->user()->memberType->name }}</span>
+                  @if (auth()->user()->type == 2)
+                  <span class="badge bg-label-info mt-1 text-uppercase">{{ auth()->user()->memberType->name ?? 'Member' }}</span>
+                  @endif
                 </div>
               </div>
             </div>
+            @if (auth()->user()->type == 2)
             <div class="d-flex justify-content-around flex-wrap mt-3 pt-3 pb-4 border-bottom">
               <div class="d-flex align-items-start me-4 mt-3 gap-2">
                 <span class="badge bg-label-primary p-2 rounded"><i class="ti ti-checkbox ti-sm"></i></span>
@@ -39,6 +46,7 @@ Profile
                 </div>
               </div>
             </div>
+            @endif
             <p class="mt-4 small text-uppercase text-muted">Details</p>
             <div class="info-container">
               <ul class="list-unstyled">
@@ -46,32 +54,35 @@ Profile
                   <span class="fw-medium me-1">Email:</span>
                   <span>{{ auth()->user()->email }}</span>
                 </li>
-                <li class="mb-2 pt-1">
-                  <span class="fw-medium me-1">Status:</span>
-                  {!! auth()->user()->status == 1 ? '<span class="badge bg-label-success">Active</span>' : '<span class="badge bg-label-danger">In-active</span>' !!}
-                </li>
-                @can('membership_expire')
-                <li class="mb-2 pt-1">
-                  <span class="fw-medium me-1">Membership:</span>
-                  <span class="">{{ auth()->user()->memberType->name }}</span>
-                </li>
-                @endcan
-                <li class="mb-2 pt-1">
-                  <span class="fw-medium me-1">Contact:</span>
-                  <span>{{ $profile ? $profile->phone_number : 'NA' }}</span>
-                </li>
-                <li class="mb-2 pt-1">
-                  <span class="fw-medium me-1">Nationality:</span>
-                  <span>{{ $profile ? $profile->nationality : 'NA' }}</span>
-                </li>
-                @can('membership_expire')
-                <li class="pt-1">
-                  <span class="fw-medium me-1">Membership Expiry Date:</span>
-                  <span class="badge bg-primary">
-                    {{ auth()->user()->membershipPayment ? auth()->user()->membershipPayment->created_at->addYear() : 'NA' }}
-                  </span>
-                </li>
-                @endcan
+                @if (auth()->user()->type == 2)
+                    <li class="mb-2 pt-1">
+                    <span class="fw-medium me-1">Status:</span>
+                    {!! auth()->user()->status == 1 ? '<span class="badge bg-label-success">Active</span>' : '<span class="badge bg-label-danger">In-active</span>' !!}
+                    </li>
+                    @can('membership_expire')
+                    <li class="mb-2 pt-1">
+                    <span class="fw-medium me-1">Membership:</span>
+                    <span class="">{{ auth()->user()->memberType->name ?? 'Member' }}</span>
+                    </li>
+                    @endcan
+
+                    <li class="mb-2 pt-1">
+                    <span class="fw-medium me-1">Contact:</span>
+                    <span>{{ $profile ? $profile->phone_number : 'NA' }}</span>
+                    </li>
+                    <li class="mb-2 pt-1">
+                    <span class="fw-medium me-1">Nationality:</span>
+                    <span>{{ $profile ? $profile->nationality : 'NA' }}</span>
+                    </li>
+                    @can('membership_expire')
+                    <li class="pt-1">
+                    <span class="fw-medium me-1">Membership Expiry Date:</span>
+                    <span class="badge bg-primary">
+                        {{ auth()->user()->membershipPayment ? auth()->user()->membershipPayment->created_at->addYear() : 'NA' }}
+                    </span>
+                    </li>
+                    @endcan
+                @endif
               </ul>
               {{-- @if (auth()->user()->type == 2)
               <div class="d-flex justify-content-center">
@@ -86,13 +97,13 @@ Profile
     </div>
 
     <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12">
-        @can('membership_expire')
-        @if(date('Y-m-d') >= auth()->user()->membershipPayment->created_at->addYears(1)->format('Y-m-d'))
-        <div class="alert alert-danger">Your membership package has expired please
-            <button class="btn btn-primary btn-sm">Click </button> to renew membership
+        {{-- @can('membership_expire') date('Y-m-d') >= auth()->user()->membershipPayment->created_at->addYears(1)->format('Y-m-d') --}}
+        @if(auth()->user()->type ==2 && empty(auth()->user()->membershipPayment))
+        <div class="alert alert-danger">Payment for Membership not found
+            <a href="{{ route('membership.pay') }}" class="btn btn-danger btn-sm">Click here </a> to pay membership
         </div>
         @endif
-        @endcan
+        {{-- @endcan --}}
         <div class="card mb-3">
           <div class="card-header pt-1">
             <ul class="nav nav-tabs card-header-tabs" role="tablist">
@@ -101,6 +112,7 @@ Profile
                   Change Password
                 </button>
               </li>
+              @if (auth()->user()->type == 2)
               <li class="nav-item" role="presentation">
                 <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-tab-profile" aria-controls="navs-tab-profile" aria-selected="false" tabindex="-1">
                   Edit Profile
@@ -111,6 +123,7 @@ Profile
                   Payments
                 </button>
               </li>
+              @endif
             </ul>
           </div>
           <div class="card-body pt-3">
@@ -313,6 +326,7 @@ Profile
                             <th>Payment For</th>
                             <th>Amount</th>
                             <th>Date</th>
+                            <th></th>
                         </tr>
                         @forelse (auth()->user()->successPayments as $row)
                         <tr>
@@ -320,6 +334,7 @@ Profile
                             <td>{{ $row->paymentType() }}</td>
                             <td><del>N</del>{{ number_format($row->amount, 2) }}</td>
                             <td>{{ DATE($row->created_at) }}</td>
+                            <td><a href="{{ route('receipt.view', $row->id) }}" target="_blank" class="btn btn-primary btn-xs"><i class="ti ti-eye"></i></a></td>
                             @empty
                             <td class="text-center"  colspan="4">No payments found</td>
                         </tr>

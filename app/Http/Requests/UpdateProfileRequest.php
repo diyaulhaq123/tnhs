@@ -26,7 +26,7 @@ class UpdateProfileRequest extends FormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'other_name' => 'sometimes',
-            'phone_number' => 'required|min:11',
+            'phone_number' => 'required|numeric|min:11',
             'gender' => 'required',
             'marital_status' => 'sometimes',
             'nationality' => 'required',

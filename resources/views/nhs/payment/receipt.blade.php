@@ -15,7 +15,7 @@
     <title>Nigerian Hypertensive Society Receipt</title>
     <meta name="description" content="" />
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ $setting->logo ? $setting->logo : asset('assets/img/nhs-logo.png') }}?v={{ time() }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -64,25 +64,20 @@
                 </div>
             </div>
             <div class="col-xl-6 col-md-6 col-12 mb-md-0 mb-4">
-                <div class="card invoice-preview-card mt-4" id="printDiv">
+                <div class="card invoice-preview-card my-4 " id="printDiv">
                     <div class="card-body">
                         <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column m-sm-3 m-0">
-                            <div class="mb-xl-0 mb-4">
-                                <div class="d-flex svg-illustration mb-4 gap-2 align-items-center">
-                                <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z" fill="#7367F0"></path>
-                                    <path opacity="0.06" fill-rule="evenodd" clip-rule="evenodd" d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z" fill="#161616"></path>
-                                    <path opacity="0.06" fill-rule="evenodd" clip-rule="evenodd" d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z" fill="#161616"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z" fill="#7367F0"></path>
-                                </svg>
+                            <div class="mb-lg-0 mb-4">
+                                <div class="d-flex svg-illustration mb-4 gap-1 align-items-center">
+                                <img src="{{ $setting->logo ? $setting->logo : asset('assets/img/nhs-logo.png') }}?v={{ time() }}" alt="Logo" width="100">
 
                                 <span class="app-brand-text fw-bold fs-4"> Nigerian Hypertensive Society </span>
                                 </div>
-                                <p class="mb-2">Office 149, 450 South Brand Brooklyn</p>
-                                <p class="mb-2">San Diego County, CA 91905, USA</p>
-                                <p class="mb-0">+1 (123) 456 7891, +44 (876) 543 2198</p>
+                                <p class="mb-2">{{ $setting->address }}</p>
+                                {{-- <p class="mb-2">San Diego County, CA 91905, USA</p>
+                                <p class="mb-0">+1 (123) 456 7891, +44 (876) 543 2198</p> --}}
                             </div>
-                            <div>
+                            <div class="mb-lg-0 mb-4">
                                 <h4 class="fw-medium mb-2">INVOICE #{{ $receipt->reference }}</h4>
                                 <div class="mb-2 pt-1">
                                 <span>Date Paid:</span>

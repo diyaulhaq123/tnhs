@@ -41,11 +41,11 @@ Edit Event
                         <div class="col-md-6 col-sm-12 mb-0">
                             <label for="member_type_id" class="form-label">Member type</label>
                             <select name="member_type_id" id="member_type_id" class="form-control form-select">
-                                <option value="">Select</option>
-                                <option value="0" {{ $event->member_type_id == 0 ? 'selected' : ''  }} >All</option>
+                                <option value="0">Members</option>
+                                {{-- <option value="0" {{ $event->member_type_id == 0 ? 'selected' : ''  }} >All</option>
                                 @foreach ($member_types as $row)
                                 <option value="{{ $row->id ?? ''  }}" {{ $row->id == $event->member_type_id ? 'selected' : ''  }} >{{ $row->name ?? '' }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
 

@@ -79,7 +79,7 @@ class MemberTypeController extends Controller
             DB::beginTransaction();
             DB::commit();
             $memberType->update($data);
-            return redirect()->back()->with('success', 'Member Type was updated');
+            return redirect()->back()->with('success', 'Member type was updated');
         }catch(Exception $e){
             DB::rollback();
             return redirect()->back()->with('error', 'An error occured');
@@ -94,7 +94,7 @@ class MemberTypeController extends Controller
     {
         try{
             $memberType->delete();
-            return redirect()->back()->with('success', 'Member Type was deleted');
+            return redirect()->back()->with('success', 'Member type removed');
         }catch(Exception $e){
             DB::rollback();
             return redirect()->back()->with('error', 'An error occured');

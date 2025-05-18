@@ -56,13 +56,13 @@ Events
                             <div class="col-8  align-content-end">
                                 @can('event_payment_status')
                                 @if($event->checkEventPayment($row->id, auth()->user()->id))
-                                <button class="btn btn-primary btn-sm" >Print Ticket</button>
+                                <a href="{{ route('event.ticket', $row->id) }}" class="btn btn-primary btn-sm" >Print Ticket</a>
                                 <button class="btn btn-success btn-xs" style="float:right"> Paid<i class="ti ti-check"></i></button>
                                 @else
                                 <form action="{{ route('pay') }}" method="post" id="paymentForm">
                                     @csrf
                                     <input type="hidden" name="payment_type_id" value="2">
-                                    <input type="hidden" name="event_id" value="{{ $row->id ?? '' }}">
+                                    <input type="hidden" name="event_id" value="{{ $row->id }}">
                                     <input type="hidden" name="email" id="email" value="{{ auth()->user()->email }}">
                                     <input type="hidden" name="amount" id="amount" value="{{ $row->amount*100 ?? '' }}">
                                     <input type="hidden" name="reference" value="{{ $reference ?? '' }}">
@@ -72,7 +72,9 @@ Events
                                 </form>
                                 @endif
                                 @endcan
+                                @if (auth()->user()->type == 1)
                                 <a href="{{ route('edit.event', $row->id) }}" class="btn btn-info btn-sm" style="float:right">Edit <i class="ti ti-edit"></i></a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -167,11 +169,11 @@ Events
                 <div class="col-md-6 col-sm-12 mb-0">
                     <label for="member_type_id" class="form-label">Member type</label>
                     <select name="member_type_id" id="member_type_id" class="form-control form-select" value="{{ old('member_type_id') }}">
-                        <option value="">Select</option>
-                        <option value="0">All</option>
-                        @foreach ($member_types as $row)
+                        <option value="1">Members</option>
+                        {{-- <option value="0">All</option> --}}
+                        {{-- @foreach ($member_types as $row)
                         <option value="{{ $row->id ?? '' }}">{{ $row->name ?? '' }}</option>
-                        @endforeach
+                        @endforeach --}}
                     </select>
                 </div>
 

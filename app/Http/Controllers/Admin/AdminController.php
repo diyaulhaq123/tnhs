@@ -151,8 +151,10 @@ class AdminController extends Controller
 
     public function event(){
         $this->eventRepo->updateEvent();
-        $done_events =  $this->eventRepo->getByStatus('done');
-        $pendings = $this->eventRepo->getByStatus('pending');
+        // $done_events =  $this->eventRepo->getByStatus('done');
+        // $pendings = $this->eventRepo->getByStatus('pending');
+        $done_events = Event::where('end_date', '<', date('Y-m-d'))->get();
+        $pendings = Event::where('end_date', '>', date('Y-m-d'))->get();
         // $check_event_payment =
         $member_types = $this->memberRepo->getMemberTypes();
         return view('nhs.admin.events', compact('done_events','pendings','member_types'));
@@ -160,8 +162,10 @@ class AdminController extends Controller
 
     public function pastEvent(){
         $this->eventRepo->updateEvent();
-        $done_events =  $this->eventRepo->getByStatus('done');
-        $pendings = $this->eventRepo->getByStatus('pending');
+        // $done_events =  $this->eventRepo->getByStatus('done');
+        // $pendings = $this->eventRepo->getByStatus('pending');
+        $done_events = Event::where('end_date', '<', date('Y-m-d'))->get();
+        $pendings = Event::where('end_date', '>', date('Y-m-d'))->get();
         // $check_event_payment =
         return view('nhs.admin.past_events', compact('done_events','pendings'));
     }
@@ -169,16 +173,16 @@ class AdminController extends Controller
     public function createEvent(CreateEventRequest $request){
         $data = $request->validated();
         try{
-            // DB::beginTransaction();
-            // $event = $this->eventRepo->create($data);
-            // DB::commit();
-            $event = Event::find(4);
+            DB::beginTransaction();
+            $event = $this->eventRepo->create($data);
+            DB::commit();
+            $event = Event::find($event->id);
             $this->sendNotification($event->id);
             return redirect()->back()->with('success', 'Even was added');
         }catch(\Exception $e){
             DB::rollback();
+            Log::error($e->getMessage().' in file: '. $e->getFile().' on line: '. $e->getLine());
             return redirect()->back()->with('error', 'An error occured');
-            Log::error($e->getMessage());
         }
     }
 
@@ -197,8 +201,8 @@ class AdminController extends Controller
             return redirect()->back()->with('success', 'Even was updated');
         }catch(\Exception $e){
             DB::rollback();
+            Log::error($e->getMessage().' in file: '. $e->getFile().' on line: '. $e->getLine());
             return redirect()->back()->with('error', 'An error occured');
-            Log::error($e->getMessage());
         }
     }
 

@@ -28,7 +28,7 @@ class UpdateEventRequest extends FormRequest
             'end_date' => 'required',
             'status' => 'nullable',
             'amount' => 'required|integer',
-            'member_type_id' => 'required|integer',
+            // 'member_type_id' => 'required|integer',
         ];
     }
 }

@@ -16,6 +16,7 @@
     <script src="../../assets/js/main.js"></script>
     <!-- Page JS -->
     <script src="../../assets/js/ui-navbar.js"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @stack('scripts')
 
     {{-- <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -44,22 +45,7 @@
     @if ($errors->any())
         @foreach ($errors->all() as $error)
             <script>
-                const Toast = Swal.mixin({
-                toast: true,
-                position: 'bottom-end',
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-
-            Toast.fire({
-                icon: 'warning',
-                title: '{{ $error }}'
-            })
+                toastr.error('{{ $error }}', 'Warning');
             </script>
         @endforeach
     @endif

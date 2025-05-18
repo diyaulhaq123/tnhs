@@ -46,18 +46,18 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'type' => ['required','integer'],
+            // 'type' => ['required','integer'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'type' => $request->type,
+            // 'type' => $request->type,
             'password' => Hash::make($request->password),
         ]);
         $this->adminRepo->assignRoleToUser($user->id, 'member');
-        Mail::to($request->email)->send(new WelcomeEmail($request->email, $request->name));
+        // Mail::to($request->email)->send(new WelcomeEmail($request->email, $request->name));
 
         event(new Registered($user));
 

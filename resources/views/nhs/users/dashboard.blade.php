@@ -6,12 +6,19 @@ Dashboard
 @section('page_content')
 
 <div class="row">
+    <div class="row text-center">
+        @if(auth()->user()->type ==2 && empty(auth()->user()->membershipPayment))
+        <div class="alert alert-danger">Payment for Membership not found
+            <a href="{{ route('membership.pay') }}" class="btn btn-danger btn-sm">Click here </a> to pay membership
+        </div>
+        @endif
+    </div>
 
     <div class="col-lg-3 col-sm-6 mb-4">
         <div class="card h-100">
           <div class="card-body d-flex justify-content-between align-items-center">
             <div class="card-title mb-0">
-              <h6 class="mb-0 me-2 text-uppercase">{{ auth()->user()->MemberType->name }}</h6>
+              <h6 class="mb-0 me-2 text-uppercase">{{ auth()->user()->MemberType ? auth()->user()->MemberType->name : 'Member' }}</h6>
               <small>Membership plan</small>
             </div>
             <div class="card-icon">
@@ -59,7 +66,7 @@ Dashboard
         <div class="card h-100">
           <div class="card-body d-flex justify-content-between align-items-center">
             <div class="card-title mb-0">
-              <h5 class="mb-0 me-2">{{ number_format(auth()->user()->successPaymentsTotal()) }} </h5>
+              <h5 class="mb-0 me-2">₦{{ number_format(auth()->user()->successPaymentsTotal(), 2) }} </h5>
               <small>Total Payments</small>
             </div>
             <div class="card-icon">

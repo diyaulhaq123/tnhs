@@ -30,7 +30,7 @@ class CreateEventRequest extends FormRequest
             'end_time' => 'nullable',
             'status' => 'nullable',
             'amount' => 'required|integer',
-            'member_type_id' => 'required|integer',
+            // 'member_type_id' => 'required|integer',
         ];
     }
 }

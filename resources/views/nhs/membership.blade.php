@@ -69,7 +69,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-5">
                 <div class="card p-5">
-                    <div class="card-header p-0">
+                    {{-- <div class="card-header p-0">
                         <div class="btn-group" style="float: right" align="right">
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf
@@ -79,7 +79,7 @@
                                 <button class="btn btn-danger" type="submit">Back</button>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
                     <h4 class="mb-2">Membership Payment</h4>
                 <p class="pb-2 mb-0">This is a payment for "{{ auth()->user()->memberType->name }}" Membership </p>
                 <div class="bg-lighter p-4 rounded mt-4">
@@ -88,11 +88,11 @@
                     <h1 class="text-heading display-5 mb-1"><del>N</del>{{ number_format(auth()->user()->memberType->fee, 2) }}</h1>
                     <sub>/*</sub>
                     </div>
-                    <div class="d-grid">
+                    {{-- <div class="d-grid">
                     <button type="button" data-bs-target="#smallModal" data-bs-toggle="modal" class="btn btn-label-primary waves-effect">
                         Change Plan
                     </button>
-                    </div>
+                    </div> --}}
                 </div>
                 <div>
                     {{-- <div class="d-flex justify-content-between align-items-center mt-3">
@@ -134,7 +134,7 @@
 
     {{-- Modal for editing membership --}}
 
-    <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
+    {{-- <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
             <form action="{{ route('change.membership') }}" method="POST">
                 @method('patch')
@@ -171,7 +171,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
 
 
     <!-- Core JS -->

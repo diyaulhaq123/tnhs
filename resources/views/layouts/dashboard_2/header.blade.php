@@ -37,9 +37,10 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../../assets/vendor/libs/node-waves/node-waves.css" />
     <link rel="stylesheet" href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> --}}
+
     {{-- <!-- Page CSS --> --}}
     <style>
         body {

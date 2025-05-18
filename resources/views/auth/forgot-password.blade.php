@@ -1,4 +1,4 @@
-@include('layouts.dashboard.header')
+@include('layouts.dashboard_2.header')
 
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
@@ -42,5 +42,5 @@
     </div>
 </div>
 
-@include('layouts.dashboard.footer')
+@include('layouts.dashboard_2.footer')
 

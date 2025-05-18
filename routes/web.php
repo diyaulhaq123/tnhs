@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::middleware(['auth','membership','verify.profile'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role.dashboard'])->group(function () {
             Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboards');
@@ -110,6 +110,7 @@ Route::middleware(['auth','membership','verify.profile'])->group(function () {
         Route::patch('/update-profile', 'updateProfile')->name('update.profile');
         // Route::get('/biodata/{id}', 'findProfile')->name('find.profile');
         // Route::delete('/delete-biodata', 'deleteProfile')->name('delete.profile');
+        Route::get('/event-ticket/{event_id}', 'eventTicket')->name('event.ticket');
     });
     Route::get('show/user/{id}', [MemberController::class,'show'])->name('user.show');
 
