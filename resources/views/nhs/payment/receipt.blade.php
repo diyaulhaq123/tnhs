@@ -133,7 +133,7 @@
                         <table class="table m-0">
                         <thead>
                             <tr>
-                            <th>Payment Type</th>
+                            <th>Service Type</th>
                             <th>Description</th>
                             <th>Amount Due</th>
                             <th>Amount Paid</th>
@@ -141,8 +141,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                            <td class="text-nowrap">{{ $receipt->paymentType() }}</td>
-                            <td class="text-nowrap">{{ $receipt->paymentType() }}</td>
+                            <td class="text-nowrap">{{ $receipt->paymentType->name }}</td>
+                            <td class="text-nowrap">{{ $receipt->paymentType->name }}</td>
                             <td>₦{{ number_format($receipt->user?->memberType->fee, 2) }}</td>
                             <td>₦{{ number_format($receipt->amount, 2) }}</td>
                             </tr>

@@ -274,7 +274,7 @@ u + .em_body .em_full_wrap { width:100% !important; width:100vw !important;}
     <td height="10" style="height:10px; line-height:0px; font-size:0px;">&nbsp;</td>
   </tr>
   <tr>
-    <td align="center" class="em_grey" style="font-family:'Proxima Nova', Arial, sans-serif; font-size:13px; line-height:22px; color:#777777;"><strong></strong> NIGERIA HYPERTENSIVE SOCIETY</td>
+    <td align="center" class="em_grey" style="font-family:'Proxima Nova', Arial, sans-serif; font-size:13px; line-height:22px; color:#777777;"><strong></strong> {{ env('APP_NAME') }}</td>
   </tr>
   <tr>
     <td height="6" style="height:6px; line-height:0px; font-size:0px;">&nbsp;</td>

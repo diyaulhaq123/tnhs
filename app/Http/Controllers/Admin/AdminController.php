@@ -7,6 +7,7 @@ use App\Models\Lga;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\State;
+use App\Models\Payment;
 use App\Models\MemberType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -231,8 +232,10 @@ class AdminController extends Controller
 
     public function users(Request $request){
 
-        $lists = $this->memberRepo->getMembers();
-        return view('nhs.admin.user_list', compact('lists'));
+        $users = User::with('profile','memberType','profile.membershipCategory')->where('type', 2)->get();
+        $users = json_encode($users);
+
+        return view('nhs.admin.user_list', compact('users'));
     }
 
     public function deleteUser(Request $request){
@@ -250,10 +253,30 @@ class AdminController extends Controller
     }
 
     public function payment(){
-        $payments = $this->payRepo->getPayments();
+        if(!Auth::user()->can('home_payment')){
+            return redirect()->back()->with('error', 'You are not allowed to view this page');
+        }
+        $payments = [];
+        if(auth()->user()->type == 1){
+           $payments = Payment::with('user','paymentType')->get();
+        }else{
+          $payments = Payment::with('user','paymentType')->where('user_id', auth()->user()->id)->get();
+        }
+        $payments = json_encode($payments);
+
         return view('nhs.admin.payments', compact('payments'));
     }
 
+
+    public function paymentApi(Request $request){
+        $payments = [];
+        if(auth()->user()->type == 1){
+           $payments = Payment::with('user','paymentType')->get();
+        }else{
+          $payments = Payment::with('user','paymentType')->where('user_id', auth()->user()->id)->get();
+        }
+        return response()->json($payments);
+    }
 
 
 

@@ -66,6 +66,14 @@
                   <div>Membership Types</div>
                 </a>
             </li>
+
+            <li class="menu-item">
+                <a href="{{ route('membership-category.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons ti ti-list"></i>
+                  <div>Membership Categories</div>
+                </a>
+            </li>
+
             @endcanany
 
             @can('home_event')

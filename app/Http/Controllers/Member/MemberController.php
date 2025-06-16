@@ -92,7 +92,7 @@ class MemberController extends Controller
                         $this->memberRepo->createProfile($data);
                     }
                 }
-                return redirect()->back()->with('success', 'Profile updated!');
+                return redirect()->back()->with('success', 'Profile saved successfully!');
         }catch(\Exception $e){
             DB::rollback();
             if($e->getCode() == '23000'){
@@ -192,7 +192,7 @@ class MemberController extends Controller
             //     $this->memberRepo->updateUser(auth()->user()->id, ['status'=> 1, 'member_type_id' => $type ]);
             // }
 
-        return redirect(route('dashboards'))->with('success', 'transaction successful');
+        return redirect(route('dashboards'))->with('success', 'Transaction successful');
         // Now you have the payment details,
         // you can store the authorization_code in your db to allow for recurrent subscriptions
         // you can then redirect or do whatever you want
@@ -207,11 +207,9 @@ class MemberController extends Controller
 
 
     public function show(Request $request){
-        $member = User::where(['type' => '2', 'id' => $request->id])->first();
+        $member = User::where(['type' => '2', 'id' => $request->id])->firstOrFail();
         $profile = optional($member->profile);
-        $lgas = Lga::select('name','id')->get();
-        $states = State::select('name','id')->get();
-        return view('nhs.users.show', compact('member','profile','states','lgas'));
+        return view('nhs.users.show', compact('member','profile'));
     }
 
 

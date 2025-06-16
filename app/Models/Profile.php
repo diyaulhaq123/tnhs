@@ -2,14 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Profile extends Model
 {
     use HasFactory;
-    protected $fillable = [
-       'user_id', 'first_name', 'last_name', 'other_name', 'phone_number',	'gender', 	'marital_status', 	'nationality', 	'state',
-       'lga', 'town', 'address_line_1', 'address_line_2', 	'date_of_birth', 	'place_of_birth', 'avatar'
-    ];
+    protected $guarded = [];
+
+    /**
+     * Get the membershipCategory that owns the Profile
+     *
+     * @return BelongsTo
+     */
+    public function membershipCategory(): BelongsTo
+    {
+        return $this->belongsTo(MembershipCategory::class);
+    }
+
 }

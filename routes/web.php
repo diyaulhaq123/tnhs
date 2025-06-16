@@ -5,11 +5,16 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\MemberTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Member\MemberController;
+use App\Http\Controllers\ContactInformationController;
+use App\Http\Controllers\MembershipCategoryController;
+use App\Http\Controllers\AcademicQualificationController;
+use App\Http\Controllers\ProfessionalAffiliationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +35,7 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','membership'])->group(function () {
     Route::get('/membership/payment', [GuestController::class, 'membership'])->name('membership.pay');
     Route::patch('/change/membership', [GuestController::class, 'changeMembership'])->name('change.membership');
 
@@ -59,14 +64,14 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','membership'])->group(function () {
 
     Route::middleware(['role.dashboard'])->group(function () {
             Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboards');
             Route::get('/member/dashboard', [MemberController::class, 'dashboard'])->name('dashboards');
         });
 
-    Route::get('/profile', [AdminController::class, 'profile'])->name('profile.index');
+    // Route::get('/profile', [AdminController::class, 'profile'])->name('profile.index');
     Route::patch('/change-password', [AdminController::class, 'changePassword'])->name('change.password');
     Route::patch('upload/avatar', [MemberController::class, 'uploadAvatar'])->name('upload.avatar');
 
@@ -76,14 +81,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('upcoming-events', 'event')->name('event.index');
         Route::get('past-events', 'pastEvent')->name('past.events');
     });
+            Route::get('payments', [AdminController::class, 'payment'])->name('payments.index');
 
 
     Route::controller(AdminController::class)->prefix('admin')->group(function () {
         Route::middleware(['role:admin'])->group(function () {
 
             Route::get('reminder','reminder')->name('reminder');
-
-            Route::get('payments', 'payment')->name('payments.index');
             Route::get('members', 'users')->name('user.list');
             Route::delete('delete-member', 'deleteUser')->name('delete.members');
 
@@ -106,11 +110,20 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::controller(MemberController::class)->prefix('member')->group(function () {
+        Route::resource('/profile', ProfileController::class);
+        Route::get('/consent-page', [ProfileController::class,'consent'])->name('consent');
+        Route::patch('/complete-profile', [ProfileController::class,'completeProfile'])->name('consent.submit');
+
         Route::post('/make-payment', 'storePayment')->name('make.payment');
         Route::patch('/update-profile', 'updateProfile')->name('update.profile');
         // Route::get('/biodata/{id}', 'findProfile')->name('find.profile');
         // Route::delete('/delete-biodata', 'deleteProfile')->name('delete.profile');
         Route::get('/event-ticket/{event_id}', 'eventTicket')->name('event.ticket');
+        Route::resource('academic-qualification', AcademicQualificationController::class);
+        Route::resource('contact-information', ContactInformationController::class);
+        Route::resource('document', DocumentController::class);
+        Route::resource('membership-category', MembershipCategoryController::class);
+        Route::resource('professional-affiliation', ProfessionalAffiliationController::class);
     });
     Route::get('show/user/{id}', [MemberController::class,'show'])->name('user.show');
 

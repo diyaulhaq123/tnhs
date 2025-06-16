@@ -20,7 +20,7 @@ Profile
           <div class="card-body">
             <div class="user-avatar-section">
               <div class="d-flex align-items-center flex-column">
-                <img class="img-fluid rounded mb-3 pt-1 mt-4" src="{{ auth()->user()->profile ? auth()->user()->profile->avatar : '../../assets/avatar/dummy.jpeg' }}" height="100" width="100" alt="User avatar">
+                <img class="img-fluid rounded mb-3 pt-1 mt-4" src="@if((auth()->user()->profile) && auth()->user()->profile->avatar != '' ){{ asset(auth()->user()->profile->avatar) }} @else {{ asset('../../assets/avatar/dummy.jpeg') }} @endif" height="100" width="100" alt="User avatar">
                 <div class="user-info text-center">
                   <h5 class="mb-2 text-uppercase">{{ auth()->user()->profile ? auth()->user()->profile->last_name.' '.auth()->user()->profile->first_name : auth()->user()->name }}</h5>
                   @if (auth()->user()->type == 2)
@@ -115,7 +115,7 @@ Profile
               @if (auth()->user()->type == 2)
               <li class="nav-item" role="presentation">
                 <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-tab-profile" aria-controls="navs-tab-profile" aria-selected="false" tabindex="-1">
-                  Edit Profile
+                  My Profile
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -172,7 +172,7 @@ Profile
 
               <div class="tab-pane fade text-left" id="navs-tab-profile" role="tabpanel">
                 <h5 class="card-title">Update profile biodata</h5>
-                <form action="{{ route('update.profile') }}" method="post">
+                {{-- <form action="{{ route('update.profile') }}" method="post">
                     @csrf
                     @method('patch')
                     <div class="row">
@@ -313,7 +313,7 @@ Profile
 
 
                     </div>
-                </form>
+                </form> --}}
 
               </div>
 
@@ -331,7 +331,7 @@ Profile
                         @forelse (auth()->user()->successPayments as $row)
                         <tr>
                             <td>#</td>
-                            <td>{{ $row->paymentType() }}</td>
+                            <td>{{ $row->paymentType->name }}</td>
                             <td><del>N</del>{{ number_format($row->amount, 2) }}</td>
                             <td>{{ DATE($row->created_at) }}</td>
                             <td><a href="{{ route('receipt.view', $row->id) }}" target="_blank" class="btn btn-primary btn-xs"><i class="ti ti-eye"></i></a></td>

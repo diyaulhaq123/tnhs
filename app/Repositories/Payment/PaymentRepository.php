@@ -7,15 +7,15 @@ use App\Models\Payment;
 class PaymentRepository implements PaymentRepositoryInterface{
 
     public function getPaymentsByStatus($remark){
-        return Payment::with('user','event')->where('remark', $remark)->get();
+        return Payment::with('user','event','paymentType')->where('remark', $remark)->get();
     }
 
     public function list(){
-        return Payment::with('user','event')->get();
+        return Payment::with('user','event','paymentType')->get();
     }
 
     public function eventPayList($id){
-        return Payment::with('user','event')->where('payment_type_id', 2)
+        return Payment::with('user','event','paymentType')->where('payment_type_id', 2)
         ->where('event_id',$id)->get();
     }
 
@@ -41,7 +41,7 @@ class PaymentRepository implements PaymentRepositoryInterface{
     }
 
     public function getPayments(){
-        return Payment::with('user','event')->orderBy('id', 'desc')->get();
+        return Payment::with('user','event','paymentType')->orderBy('id', 'desc')->get();
     }
 
 }

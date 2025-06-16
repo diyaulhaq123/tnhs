@@ -5,14 +5,14 @@
       <div class="authentication-inner py-4">
         <!-- Login -->
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-sm-12">
+            <div class="col-lg-5 col-sm-12">
                 <div class="card">
                     <div class="card-body">
                       <!-- Logo -->
                       <div class="app-brand justify-content-center mb-4 mt-2">
                         <a href="javascript:void(0)" class="app-brand-link gap-2">
                             <img src="{{ asset('assets/img/nhs-logo.png') }}?v={{ time() }}" class="rounded-circle logo" width="80" height="" alt="">
-                          <span class="app-brand-text demo text-body fw-bold ms-1">Nigeria Hypertensive Society</span>
+                          <span class="app-brand-text demo text-body fw-bold ms-1">{{ env('APP_NAME') }}</span>
                         </a>
                       </div>
                       <!-- /Logo -->

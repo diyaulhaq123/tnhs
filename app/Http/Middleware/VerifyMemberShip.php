@@ -17,19 +17,28 @@ class VerifyMemberShip
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $payment = Payment::where('user_id', auth()->user()->id)->where('payment_type_id', 1)
-        ->where('remark', 'success')->first();
-        // Auth::user()->status != 1
+        if(auth()->user()->type == 2){
+            $payment = Payment::where('user_id', auth()->user()->id)
+                ->where('payment_type_id', 1)
+                ->where('remark', 'success')
+                ->latest()
+                ->first();
 
-        if(!$payment ){
-            return redirect(route('membership.pay'));
+
+            if(empty($payment)){
+                return redirect(route('membership.pay'));
+            }else{
+
+                if($payment && $payment->created_at->addYear() < now()){
+                    return redirect(route('membership.pay'));
+                }
+                if(auth()->user()->completed_profile != 1){
+                    return redirect(route('profile.create'));
+                }
+
+            }
         }
 
-        // if( auth()->user()->status == 1){
-        //     return $next($request);
-        // }else{
-        //     return redirect(route('membership.pay'));
-        // }
         return $next($request);
     }
 }

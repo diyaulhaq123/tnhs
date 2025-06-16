@@ -23,20 +23,22 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             // 'user_id' => 'required|integer',
+            'title' => 'required|string',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'other_name' => 'sometimes',
+            'other_name' => 'nullable|string',
             'phone_number' => 'required|numeric|min:11',
-            'gender' => 'required',
-            'marital_status' => 'sometimes',
-            'nationality' => 'required',
+            'gender' => 'required|string',
+            'marital_status' => 'nullable|string',
+            'nationality' => 'required|string',
             'state' => 'required|integer',
             'lga' => 'required|integer',
-            'town' => 'sometimes|string',
-            'address_line_1' => 'required|string',
-            'address_line_2' => 'sometimes',
+            'town' => 'nullable|string',
             'date_of_birth' => 'required',
-            'place_of_birth' => 'sometimes',
+            'place_of_birth' => 'nullable|string',
+            'membership_category_id' => 'required|integer',
+            'involved_in_hypertension' => 'required|string',
+            'hypertension_description' => 'nullable|required_if:involved_in_hypertension,Yes|string',
         ];
     }
 }

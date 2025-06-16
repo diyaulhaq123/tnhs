@@ -89,7 +89,7 @@
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="{!! auth()->user()->profile ? auth()->user()->profile->avatar : '../../assets/avatar/dummy.jpeg' !!}" alt class="h-auto rounded-circle" />
+                            <img src="@if((auth()->user()->profile) && auth()->user()->profile->avatar != '' ){{ asset(auth()->user()->profile->avatar) }} @else {{ asset('../../assets/avatar/dummy.jpeg') }} @endif" alt class="h-auto rounded-circle" />
                           </div>
                         </div>
                         <div class="flex-grow-1">

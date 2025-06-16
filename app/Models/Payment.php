@@ -49,18 +49,28 @@ class Payment extends Model
         return $payments;
     }
 
-    public function paymentType()
+    /**
+     * Get the paymentType that owns the Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paymentType(): BelongsTo
     {
-        $paymentTypeId = $this->payment_type_id;
-
-        if ($paymentTypeId == 1) {
-            $value = 'Membership';
-        } else {
-            $value = 'Event';
-        }
-
-        return $value;
+        return $this->belongsTo(PaymentType::class);
     }
+
+    // public function paymentType()
+    // {
+    //     $paymentTypeId = $this->payment_type_id;
+
+    //     if ($paymentTypeId == 1) {
+    //         $value = 'Membership';
+    //     } else {
+    //         $value = 'Event';
+    //     }
+
+    //     return $value;
+    // }
 
 
 

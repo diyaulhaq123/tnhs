@@ -27,7 +27,9 @@ class User extends Authenticatable
         'email',
         'password',
         'type',
-        'status'
+        'status',
+        'member_type_id',
+        'completed_profile'
     ];
 
     /**
@@ -138,6 +140,38 @@ class User extends Authenticatable
 
     public function getUsersByStatus($status){
         return Self::with('profile')->where('status', $status)->get();
+    }
+
+    /**
+     * Get the academicQualifications associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function academicQualifications(): HasMany
+    {
+        return $this->hasMany(AcademicQualification::class);
+    }
+
+
+
+    /**
+     * Get the contact_informations associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function contactInformation(): HasOne
+    {
+        return $this->hasOne(ContactInformation::class);
+    }
+
+    /**
+     * Get all of the documents for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(Document::class);
     }
 
 
