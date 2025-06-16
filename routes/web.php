@@ -35,7 +35,7 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth','membership'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/membership/payment', [GuestController::class, 'membership'])->name('membership.pay');
     Route::patch('/change/membership', [GuestController::class, 'changeMembership'])->name('change.membership');
 
@@ -64,68 +64,73 @@ Route::middleware(['auth','membership'])->group(function () {
 
 
 
-Route::middleware(['auth','membership'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/profile', ProfileController::class);
+    Route::post('/make-payment', [PaymentController::class, 'storePayment'])->name('make.payment');
 
-    Route::middleware(['role.dashboard'])->group(function () {
-            Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboards');
-            Route::get('/member/dashboard', [MemberController::class, 'dashboard'])->name('dashboards');
+    Route::patch('/update-profile', [MemberController::class, 'updateProfile'])->name('update.profile');
+    Route::resource('academic-qualification', AcademicQualificationController::class);
+    Route::resource('contact-information', ContactInformationController::class);
+    Route::resource('document', DocumentController::class);
+    Route::resource('membership-category', MembershipCategoryController::class);
+    Route::resource('professional-affiliation', ProfessionalAffiliationController::class);
+
+
+
+    Route::middleware(['membership'])->group(function () {
+            Route::middleware(['role.dashboard'])->group(function () {
+                Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboards');
+                Route::get('/member/dashboard', [MemberController::class, 'dashboard'])->name('dashboards');
+            });
+        // Route::get('/profile', [AdminController::class, 'profile'])->name('profile.index');
+        Route::patch('/change-password', [AdminController::class, 'changePassword'])->name('change.password');
+        Route::patch('upload/avatar', [MemberController::class, 'uploadAvatar'])->name('upload.avatar');
+
+
+        Route::controller(AdminController::class)->group(function () {
+
+            Route::get('upcoming-events', 'event')->name('event.index');
+            Route::get('past-events', 'pastEvent')->name('past.events');
+        });
+                Route::get('payments', [AdminController::class, 'payment'])->name('payments.index');
+
+
+        Route::controller(AdminController::class)->prefix('admin')->group(function () {
+            Route::middleware(['role:admin'])->group(function () {
+
+                Route::get('reminder','reminder')->name('reminder');
+                Route::get('members', 'users')->name('user.list');
+                Route::delete('delete-member', 'deleteUser')->name('delete.members');
+
+                Route::post('/event/notify','sendNotification')->name('event.notify');
+
+                Route::get('/event-payment/{id}', 'eventPaymentList')->name('event.pay-list');
+                Route::post('evnet/add','createEvent')->name('create.event');
+
+                Route::get('event-edit/{id}','edit')->name('edit.event');
+                Route::put('update-event/{id}','updateEvent')->name('update.event');
+
+                // Route::get('/roles','role')->name('role');
+                // Route::post('/role/add', 'createRole')->name('create.role');
+
+                Route::get('/manage-permissions','permissions')->name('manage.permission');
+                // Route::post('/permission/add', 'createPermission')->name('create.permission');
+                Route::post('/assign/permission', 'assignPermission')->name('assign.permission');
+                Route::post('/assign/role', 'assignRoleToUser')->name('assign.role');
+            });
         });
 
-    // Route::get('/profile', [AdminController::class, 'profile'])->name('profile.index');
-    Route::patch('/change-password', [AdminController::class, 'changePassword'])->name('change.password');
-    Route::patch('upload/avatar', [MemberController::class, 'uploadAvatar'])->name('upload.avatar');
+        Route::controller(MemberController::class)->prefix('member')->group(function () {
 
-
-    Route::controller(AdminController::class)->group(function () {
-
-        Route::get('upcoming-events', 'event')->name('event.index');
-        Route::get('past-events', 'pastEvent')->name('past.events');
-    });
-            Route::get('payments', [AdminController::class, 'payment'])->name('payments.index');
-
-
-    Route::controller(AdminController::class)->prefix('admin')->group(function () {
-        Route::middleware(['role:admin'])->group(function () {
-
-            Route::get('reminder','reminder')->name('reminder');
-            Route::get('members', 'users')->name('user.list');
-            Route::delete('delete-member', 'deleteUser')->name('delete.members');
-
-            Route::post('/event/notify','sendNotification')->name('event.notify');
-
-            Route::get('/event-payment/{id}', 'eventPaymentList')->name('event.pay-list');
-            Route::post('evnet/add','createEvent')->name('create.event');
-
-            Route::get('event-edit/{id}','edit')->name('edit.event');
-            Route::put('update-event/{id}','updateEvent')->name('update.event');
-
-            // Route::get('/roles','role')->name('role');
-            // Route::post('/role/add', 'createRole')->name('create.role');
-
-            Route::get('/manage-permissions','permissions')->name('manage.permission');
-            // Route::post('/permission/add', 'createPermission')->name('create.permission');
-            Route::post('/assign/permission', 'assignPermission')->name('assign.permission');
-            Route::post('/assign/role', 'assignRoleToUser')->name('assign.role');
+            // Route::get('/biodata/{id}', 'findProfile')->name('find.profile');
+            // Route::delete('/delete-biodata', 'deleteProfile')->name('delete.profile');
+            Route::get('/event-ticket/{event_id}', 'eventTicket')->name('event.ticket');
         });
+        Route::get('show/user/{id}', [MemberController::class,'show'])->name('user.show');
     });
 
-    Route::controller(MemberController::class)->prefix('member')->group(function () {
-        Route::resource('/profile', ProfileController::class);
-        Route::get('/consent-page', [ProfileController::class,'consent'])->name('consent');
-        Route::patch('/complete-profile', [ProfileController::class,'completeProfile'])->name('consent.submit');
-
-        Route::post('/make-payment', 'storePayment')->name('make.payment');
-        Route::patch('/update-profile', 'updateProfile')->name('update.profile');
-        // Route::get('/biodata/{id}', 'findProfile')->name('find.profile');
-        // Route::delete('/delete-biodata', 'deleteProfile')->name('delete.profile');
-        Route::get('/event-ticket/{event_id}', 'eventTicket')->name('event.ticket');
-        Route::resource('academic-qualification', AcademicQualificationController::class);
-        Route::resource('contact-information', ContactInformationController::class);
-        Route::resource('document', DocumentController::class);
-        Route::resource('membership-category', MembershipCategoryController::class);
-        Route::resource('professional-affiliation', ProfessionalAffiliationController::class);
-    });
-    Route::get('show/user/{id}', [MemberController::class,'show'])->name('user.show');
+    Route::get('/consent-page', [ProfileController::class,'consent'])->name('consent');
+    Route::patch('/complete-profile', [ProfileController::class,'completeProfile'])->name('consent.submit');
 
 });
 

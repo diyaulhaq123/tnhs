@@ -92,7 +92,7 @@ class MemberController extends Controller
                         $this->memberRepo->createProfile($data);
                     }
                 }
-                return redirect()->back()->with('success', 'Profile saved successfully!');
+                return redirect(route('contact-information.create'))->with('success', 'Profile saved successfully!');
         }catch(\Exception $e){
             DB::rollback();
             if($e->getCode() == '23000'){

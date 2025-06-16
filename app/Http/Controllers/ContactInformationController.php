@@ -44,7 +44,7 @@ class ContactInformationController extends Controller
 
         if ($request->id) {
             ContactInformation::where('id', $request->id)->where('user_id', auth()->id())->update($validated);
-            return redirect()->back()->with('success', 'Contact Information updated.');
+            return redirect(route('academic-qualification.create'))->with('success', 'Contact Information updated.');
         } else {
             ContactInformation::create($validated);
             return redirect()->back()->with('success', 'Contact Information saved.');
