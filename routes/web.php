@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\MemberTypeController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Member\MemberController;
 use App\Http\Controllers\ContactInformationController;
@@ -55,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(PaymentController::class)->group(function () {
         Route::get('/receipt/{id}', 'receipt')->name('receipt.view');
     });
+    Route::resource('/qualification', QualificationController::class);
     Route::resource('/member_types', MemberTypeController::class);
     Route::resource('/settings', SettingsController::class);
     Route::resource('/permissions', PermissionController::class);
@@ -65,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('{id}/user', [UserController::class, 'show'])->name('user.show');
     Route::resource('/profile', ProfileController::class);
     Route::post('/make-payment', [PaymentController::class, 'storePayment'])->name('make.payment');
 

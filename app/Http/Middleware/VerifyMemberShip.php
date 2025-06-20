@@ -29,9 +29,9 @@ class VerifyMemberShip
                 ->where('remark', 'success')
                 ->latest()
                 ->first();
-
+            // || $payment->created_at->addYear() < now()
             // No payment or payment is expired
-            if (!$payment || $payment->created_at->addYear() < now()) {
+            if (!$payment) {
                 return redirect()->route('membership.pay');
             }
 

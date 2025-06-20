@@ -69,7 +69,7 @@ Academic Qualification
     <div class="col-12 p-3 mt-3">
         <div class="card border card-border-light">
             <div class="card-header">
-                <h6 class="card-title mb-0">List of Documents</h6>
+                <h6 class="card-title mb-0">Academic Qualifications</h6>
             </div>
             <div class="card-body">
                 <table class="table table-striped align-middle table-nowrap mb-0">

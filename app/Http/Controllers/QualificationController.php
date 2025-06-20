@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Qualification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class QualificationController extends Controller
 {
@@ -12,7 +14,8 @@ class QualificationController extends Controller
      */
     public function index()
     {
-        //
+        $qualifications = Qualification::get();
+        return view('qualifications.index', compact('qualifications'));
     }
 
     /**
@@ -20,7 +23,7 @@ class QualificationController extends Controller
      */
     public function create()
     {
-        //
+        return view('qualifications.create');
     }
 
     /**
@@ -28,7 +31,20 @@ class QualificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'status' => 'required|integer'
+        ]);
+        try{
+            DB::beginTransaction();
+            DB::commit();
+            Qualification::create($data);
+            return redirect()->back()->with('success', 'Qualification was created');
+        }catch(Exception $e){
+            DB::rollback();
+            return redirect()->back()->with('error', 'An error occured');
+            Log::error($e->getMessage());
+        }
     }
 
     /**
@@ -44,7 +60,7 @@ class QualificationController extends Controller
      */
     public function edit(Qualification $qualification)
     {
-        //
+        return view('qualifications.edit', compact('qualification'));  
     }
 
     /**
@@ -52,7 +68,20 @@ class QualificationController extends Controller
      */
     public function update(Request $request, Qualification $qualification)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'status' => 'required|integer'
+        ]);
+        try{
+            DB::beginTransaction();
+            DB::commit();
+            $qualification->update($data);
+            return redirect()->back()->with('success', 'Qualification was updated');
+        }catch(Exception $e){
+            DB::rollback();
+            return redirect()->back()->with('error', 'An error occured');
+            Log::error($e->getMessage());
+        }
     }
 
     /**
@@ -60,6 +89,13 @@ class QualificationController extends Controller
      */
     public function destroy(Qualification $qualification)
     {
-        //
+        try{
+            $qualification->delete();
+            return redirect()->back()->with('success', 'Qualification removed');
+        }catch(Exception $e){
+            DB::rollback();
+            return redirect()->back()->with('error', 'An error occured');
+            Log::error($e->getMessage());
+        }
     }
 }

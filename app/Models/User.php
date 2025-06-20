@@ -69,7 +69,7 @@ class User extends Authenticatable
      */
     public function profile(): HasOne
     {
-        return $this->hasOne(Profile::class, 'user_id', 'id');
+        return $this->hasOne(Profile::class, 'user_id', 'id')->with('membershipCategory','states', 'lgas');
     }
 
     /**
@@ -173,6 +173,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Document::class);
     }
+
+
 
 
 

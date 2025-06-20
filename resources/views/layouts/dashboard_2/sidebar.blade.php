@@ -74,6 +74,13 @@
                 </a>
             </li>
 
+            <li class="menu-item">
+                <a href="{{ route('qualification.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons ti ti-file"></i>
+                  <div>Qualification</div>
+                </a>
+            </li>
+
             @endcanany
 
             @can('home_event')

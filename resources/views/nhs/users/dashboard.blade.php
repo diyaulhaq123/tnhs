@@ -55,9 +55,13 @@ Dashboard
 
 <div class="row">
     <div class="row text-center">
-        @if(auth()->user()->type ==2 && empty(auth()->user()->membershipPayment))
+        @if(auth()->user()->type == 2 && empty(auth()->user()->membershipPayment))
         <div class="alert alert-danger">Payment for Membership not found
             <a href="{{ route('membership.pay') }}" class="btn btn-danger btn-sm">Click here </a> to pay membership
+        </div>
+        @elseif (auth()->user()->type == 2 && auth()->user()->membershipPayment && auth()->user()->membershipPayment->created_at->addYear() < now())
+        <div class="alert alert-warning">Your membership has expired
+            <a href="{{ route('membership.pay') }}" class="btn btn-warning btn-sm">Click here </a> to renew membership
         </div>
         @endif
     </div>

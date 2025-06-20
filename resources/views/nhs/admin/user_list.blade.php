@@ -31,39 +31,55 @@ Members List
     <script>
          // Parse the PHP JSON string into JavaScript object
         const users = JSON.parse(@json($users));
-        new gridjs.Grid({
-        columns: ["Email", "Name", "Membership Category",
-        {
-            name: "Completed Profile",
-            formatter: (cell, row) => {
-                if (cell === 1) {
-                return gridjs.html(`<i class='text-success fa fa-check'></i>
-                <a href='/${row.cells[0].data.id}/profile' class='badge bg-success text-white ms-2'>
-                Profile
-                </a>`);
-                } else {
-                return gridjs.html(`<i class='text-danger fa fa-ban'></i>`);
+
+            new gridjs.Grid({
+                columns: [
+                    // Add a hidden 'ID' column as the first column.
+                    // This column's data will be the user.id, making it accessible via row.cells[0].data
+                    { id: 'id', name: 'ID', hidden: true },
+                    "Email",
+                    "Name",
+                    "Membership Category",
+                    {
+                        name: "Completed Profile",
+                        formatter: (cell, row) => {
+                            // Now, row.cells[0].data will correctly contain the user's ID.
+                            // We access it directly without '.id' because it is the data itself.
+                            const userId = row.cells[0].data;
+                            if (cell === 1) {
+                                return gridjs.html(`<i class='text-success fa fa-check'></i>
+                                    <a href='/${userId}/user' class='badge bg-success text-white ms-2'>
+                                        Profile
+                                    </a>`);
+                            } else {
+                                return gridjs.html(`<i class='text-danger fa fa-ban'></i>`);
+                            }
+                        }
+                    },
+                    "Action"
+                ],
+                data: users.map(user => [
+                    // Make sure user.id is the first element in the data array for each row,
+                    // corresponding to the new hidden 'ID' column.
+                    user.id,
+                    user.email ?? "N/A",
+                    user.name ?? "N/A",
+                    user.profile && user.profile.membership_category ? user.profile.membership_category.name : "N/A",
+                    user.completed_profile,
+                    // This action link already correctly uses user.id
+                    gridjs.html(`<a href='/show/user/${user.id}' target='_blank' class=''><i class='text-info fa fa-eye'></i></a>`)
+                ]),
+                pagination: {
+                    enabled: true,
+                    limit: 10
+                },
+                search: true,
+                sort: true,
+                className: {
+                    table: 'table table-bordered'
                 }
-            }
-        },
-        "Action"],
-        data: users.map(user => [
-        user.email ?? "N/A",
-        user.name ?? "N/A",
-        user.profile && user.profile.membership_category ? user.profile.membership_category.name : "N/A",
-        user.completed_profile,
-        gridjs.html(`<a href='/show/user/${user.id}' target='_blank' class=''><i class='text-info fa fa-eye'></i></a>`)
-        ]),
-        pagination: {
-        enabled: true,
-        limit: 10
-        },
-        search: true,
-        sort: true,
-        className: {
-        table: 'table table-bordered'
-        }
-    }).render(document.getElementById("members-table"));
+            }).render(document.getElementById("members-table"));
+
     </script>
 @endpush
 @endsection
