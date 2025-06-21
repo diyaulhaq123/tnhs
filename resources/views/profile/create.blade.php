@@ -55,7 +55,12 @@ Personal Information
 
                                      <div class="col-lg-4 col-sm-12 my-2">
                                         <label for="">Title <span class="text-danger">*</span></label>
-                                        <select class="form-control form-select" name="title" id="title">
+                                        <input type="text" class="form-control" name="title" id="title" placeholder="Title"
+                                        value="{{ $profile ? $profile->title : old('title') }}">
+                                        @error('title')
+                                        <span class="text-danger" style="font-size:12px">{{ $message }}</span>
+                                        @enderror
+                                        {{-- <select class="form-control form-select" name="title" id="title">
                                             <option value="">Select Title</option>
                                             <option value="Mr" @if( ($profile && $profile->title == 'Mr') || old('title') == 'Mr') {!! 'selected' !!}  @endif>Mr</option>
                                             <option value="Mrs" @if( ($profile && $profile->title == 'Mrs') || old('title') == 'Mrs') {!! 'selected' !!}  @endif>Mrs</option>
@@ -69,7 +74,7 @@ Personal Information
                                             <option value="Pastor" @if($profile && $profile->title == 'Pastor') {!! 'selected' !!}  @endif>Pastor</option>
                                             <option value="Imam" @if($profile && $profile->title == 'Imam') {!! 'selected' !!}  @endif>Imam</option>
                                             <option value="Other" @if($profile && $profile->title == 'Other') {!! 'selected' !!}  @endif>Other</option>
-                                        </select>
+                                        </select> --}}
                                     </div>
 
                                     <div class="col-lg-4 col-sm-12 my-2">
