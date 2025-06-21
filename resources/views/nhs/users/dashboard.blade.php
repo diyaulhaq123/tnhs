@@ -82,22 +82,29 @@ Dashboard
                     </div>
                     </div>
                     @if (auth()->user()->type == 2)
-                    <div class="d-flex justify-content-around flex-wrap mt-3 pt-3 pb-4 border-bottom">
-                    <div class="d-flex align-items-start me-4 mt-3 gap-2">
-                        <span class="badge bg-label-primary p-2 rounded"><i class="ti ti-checkbox ti-sm"></i></span>
-                        <div>
-                        <p class="mb-0 fw-medium">{{ count(auth()->user()->successPayments) }}</p>
-                        <small>Payments</small>
+                    <div class="d-flex justify-content-around flex-wrap mt-3 pt-3 pb-1 border-bottom">
+                        <div class="d-flex align-items-start me-4 mt-3 gap-2">
+                            <span class="badge bg-label-primary p-2 rounded"><i class="ti ti-checkbox ti-sm"></i></span>
+                            <div>
+                            <p class="mb-0 fw-medium">{{ count(auth()->user()->successPayments) }}</p>
+                            <small>Payments</small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="d-flex align-items-start mt-3 gap-2">
-                        <span class="badge bg-label-primary p-2 rounded"><i class="ti ti-briefcase ti-sm"></i></span>
-                        <div>
-                        <p class="mb-0 fw-medium">{{ count(auth()->user()->eventPayments) }}</p>
-                        <small>Events Attended</small>
+                        <div class="d-flex align-items-start mt-3 gap-2">
+                            <span class="badge bg-label-primary p-2 rounded"><i class="ti ti-briefcase ti-sm"></i></span>
+                            <div>
+                            <p class="mb-0 fw-medium">{{ count(auth()->user()->eventPayments) }}</p>
+                            <small>Events Attended</small>
+                            </div>
                         </div>
+                        @if (auth()->user()->type == 2 && auth()->user()->membership_number != null)
+                        <div class=" align-items-start mt-2">
+                            <span class="badge bg-info fw-bold" >{{ auth()->user()->membership_number }}</span>
+                        </div>
+                        @endif
                     </div>
-                    </div>
+
+
                     @endif
                     <p class="mt-4 small text-uppercase text-muted">Details</p>
                     <div class="info-container">
@@ -147,6 +154,7 @@ Dashboard
                                 </span>
                             </li>
                             @endif
+
                         @endif
                     </ul>
                     {{-- @if (auth()->user()->type == 2)
