@@ -11,8 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use App\Services\MembershipNumberService;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use Unicodeveloper\Paystack\Facades\Paystack;
@@ -20,17 +22,21 @@ use App\Repositories\Event\EventRepositoryInterface;
 use App\Repositories\Member\MemberRepositoryInterface;
 use App\Repositories\Payment\PaymentRepositoryInterface;
 
+
 class MemberController extends Controller
 {
 
     protected $memberRepo;
     protected $eventRepo;
     protected $payRepo;
+    protected $membershipNumberService;
+
     public function __construct(MemberRepositoryInterface $memberRepo, PaymentRepositoryInterface $payRepo,
-        EventRepositoryInterface $eventRepo){
+        EventRepositoryInterface $eventRepo, MembershipNumberService $membershipNumberService){
         $this->eventRepo = $eventRepo;
         $this->memberRepo = $memberRepo;
         $this->payRepo = $payRepo;
+        $this->membershipNumberService = $membershipNumberService;
     }
 
     //
@@ -175,27 +181,65 @@ class MemberController extends Controller
      */
     public function handleGatewayCallback(Request $request)
     {
-        $paymentDetails = Paystack::getPaymentData();
+       $paymentDetails = Paystack::getPaymentData();
         $amount = $paymentDetails['data']['amount']/100;
         $event = $paymentDetails['data']['metadata'];
         $payment_type_id = $paymentDetails['data']['metadata'];
-        $this->payRepo->payEvent([
-                'user_id' => auth()->user()->id,
-                'payment_type_id' => $payment_type_id['payment_type_id'],
-                'event_id' => $event['event_id'] ?? Null,
-                'amount' => $amount,
-                'reference' => $paymentDetails['data']['reference'],
-                'remark' =>  $paymentDetails['data']['status']
-            ]);
-            // if($paymentDetails['data']['status'] == 'success'){
-            //     $type = auth()->user()->memberType->id ?? '2';
-            //     $this->memberRepo->updateUser(auth()->user()->id, ['status'=> 1, 'member_type_id' => $type ]);
-            // }
 
-        return redirect(route('dashboards'))->with('success', 'Transaction successful');
-        // Now you have the payment details,
-        // you can store the authorization_code in your db to allow for recurrent subscriptions
-        // you can then redirect or do whatever you want
+        // Assuming $this->payRepo is properly initialized (e.g., via constructor injection)
+        if (isset($this->payRepo)) {
+            $this->payRepo->payEvent([
+                    'user_id' => Auth::user()->id, // Use Auth::user()->id for authenticated user
+                    'payment_type_id' => $payment_type_id['payment_type_id'],
+                    'event_id' => $event['event_id'] ?? Null,
+                    'amount' => $amount,
+                    'reference' => $paymentDetails['data']['reference'],
+                    'remark' =>  $paymentDetails['data']['status']
+                ]);
+        } else {
+            Log::warning("Pay repository not initialized in PaymentController.");
+            // Or handle this error appropriately if the repository is mandatory.
+        }
+
+        // Assign membership number only on successful payment
+        if($paymentDetails['data']['status'] == 'success'){
+            $user = Auth::user(); // Get the authenticated user
+
+            if (!$user) {
+                // If user is not authenticated, handle the error.
+                Log::error("Attempted to assign membership number but no authenticated user found.");
+                return redirect(route('dashboards'))->with('error', 'Authentication error: Could not find user.');
+            }
+
+            try {
+                // Call the service to generate and assign the membership number.
+                $membershipNumber = $this->membershipNumberService->generateAndAssign($user);
+
+                // Log success
+                Log::info("Membership number {$membershipNumber} assigned to user {$user->id}.");
+
+                // Assuming $this->memberRepo is properly initialized
+                if (isset($this->memberRepo)) {
+                    $type = Auth::user()->memberType->id ?? '2';
+                    $this->memberRepo->updateUser(Auth::user()->id, ['status'=> 1, 'member_type_id' => $type ]);
+                } else {
+                    Log::warning("Member repository not initialized in PaymentController, user status not updated.");
+                }
+
+                return redirect(route('dashboards'))->with('success', 'Transaction successful and membership assigned!');
+
+            } catch (\Exception $e) {
+                // Handle any exceptions during the assignment process.
+                Log::error("Failed to assign membership number to user {$user->id}: " . $e->getMessage());
+
+                return redirect(route('dashboards'))->with('error', 'Transaction successful, but failed to assign membership number: ' . $e->getMessage());
+            }
+        } else {
+            // Handle unsuccessful payment status if needed
+            Log::warning("Payment not successful for reference: {$paymentDetails['data']['reference']}. Status: {$paymentDetails['data']['status']}");
+            return redirect(route('dashboards'))->with('error', 'Transaction not successful. Status: ' . $paymentDetails['data']['status']);
+        }
+
     }
 
 

@@ -89,7 +89,7 @@ class User extends Authenticatable
      */
     public function successPayments(): HasMany
     {
-        return $this->hasMany(Payment::class, 'user_id', 'id')->where('remark', 'success');
+        return $this->hasMany(Payment::class, 'user_id', 'id')->with('event','paymentType')->where('remark', 'success');
     }
 
 
@@ -172,6 +172,17 @@ class User extends Authenticatable
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+
+    /**
+     * Get all of the professionalAffiliations for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function professionalAffiliations(): HasMany
+    {
+        return $this->hasMany(ProfessionalAffiliation::class);
     }
 
 

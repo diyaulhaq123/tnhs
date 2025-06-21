@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuestController;
@@ -10,9 +11,9 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\MemberTypeController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Member\MemberController;
+use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\ContactInformationController;
 use App\Http\Controllers\MembershipCategoryController;
 use App\Http\Controllers\AcademicQualificationController;
@@ -38,6 +39,11 @@ Route::get('/', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/clear-cache', function() {
+        $exitCode = Artisan::call('cache:clear');
+        return '<h1>Cache facade value cleared</h1>';
+    });
     Route::get('/membership/payment', [GuestController::class, 'membership'])->name('membership.pay');
     Route::patch('/change/membership', [GuestController::class, 'changeMembership'])->name('change.membership');
 
@@ -57,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(PaymentController::class)->group(function () {
         Route::get('/receipt/{id}', 'receipt')->name('receipt.view');
     });
+
     Route::resource('/qualification', QualificationController::class);
     Route::resource('/member_types', MemberTypeController::class);
     Route::resource('/settings', SettingsController::class);
@@ -66,22 +73,24 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('{id}/user', [UserController::class, 'show'])->name('user.show');
-    Route::resource('/profile', ProfileController::class);
-    Route::post('/make-payment', [PaymentController::class, 'storePayment'])->name('make.payment');
-
-    Route::patch('/update-profile', [MemberController::class, 'updateProfile'])->name('update.profile');
+ Route::middleware(['auth','verify.pay'])->group(function () {
     Route::resource('academic-qualification', AcademicQualificationController::class);
     Route::resource('contact-information', ContactInformationController::class);
     Route::resource('document', DocumentController::class);
     Route::resource('membership-category', MembershipCategoryController::class);
     Route::resource('professional-affiliation', ProfessionalAffiliationController::class);
+    Route::resource('/profile', ProfileController::class);
+
+ });
 
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('{id}/user', [UserController::class, 'show'])->name('user.display');
+    Route::post('/make-payment', [PaymentController::class, 'storePayment'])->name('make.payment');
 
-    Route::middleware(['membership'])->group(function () {
+    Route::patch('/update-profile', [MemberController::class, 'updateProfile'])->name('update.profile');
+
+    Route::middleware(['auth','membership'])->group(function () {
             Route::middleware(['role.dashboard'])->group(function () {
                 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboards');
                 Route::get('/member/dashboard', [MemberController::class, 'dashboard'])->name('dashboards');

@@ -123,17 +123,30 @@ Dashboard
                             <span>{{ $profile ? $profile->phone_number : 'NA' }}</span>
                             </li>
                             <li class="mb-2 pt-1">
-                            <span class="fw-medium me-1">Nationality:</span>
-                            <span>{{ $profile ? $profile->nationality : 'NA' }}</span>
+                                <span class="fw-medium me-1">Nationality:</span>
+                                <span>{{ $profile ? $profile->nationality : 'NA' }}</span>
                             </li>
                             @can('membership_expire')
                             <li class="pt-1">
-                            <span class="fw-medium me-1">Membership Expiry Date:</span>
-                            <span class="badge bg-primary">
-                                {{ auth()->user()->membershipPayment ? auth()->user()->membershipPayment->created_at->addYear() : 'NA' }}
-                            </span>
+                                <span class="fw-medium me-1">Membership Expiry Date:</span>
+                                <span class="badge bg-primary">
+                                    {{ auth()->user()->membershipPayment ? auth()->user()->membershipPayment->created_at->addYear() : 'NA' }}
+                                </span>
                             </li>
                             @endcan
+                            @if (auth()->user()->type == 2)
+                            <li class="mt-2 pt-1">
+                                <span class="fw-medium me-1">Memberhsip Form:</span>
+                                <span>
+                                    @if (auth()->user()->completed_profile == 1)
+                                    {{-- {{ auth()->user()->id.'/user' }} --}}
+                                    <a href="{{ route('user.display', auth()->user()->id) }}" class="badge bg-success ">Complete</a>
+                                    @else
+                                    <span class="badge bg-warning">Incomplete</span>
+                                    @endif
+                                </span>
+                            </li>
+                            @endif
                         @endif
                     </ul>
                     {{-- @if (auth()->user()->type == 2)

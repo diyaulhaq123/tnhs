@@ -56,7 +56,7 @@ Documents Upload
                 <h6 class="card-title mb-0">
                     <div class="float-start">Uploaded Documents</div>
                     @if (auth()->user()->documents->count() >= 1)
-                    <a href="{{ route('consent') }}" class="btn btn-primary float-end">Complete Application <i class="fa fa-check ms-2"></i></a>
+                    <a href="{{ route('consent') }}" class="btn btn-primary float-end">Complete Personal Information Form <i class="fa fa-check ms-2"></i></a>
                     @endif
                 </h6>
             </div>

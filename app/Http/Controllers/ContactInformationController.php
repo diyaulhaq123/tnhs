@@ -30,14 +30,14 @@ class ContactInformationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'place_of_work' => 'required|string|max:255',
-            'department' => 'nullable|string|max:255',
-            'position' => 'required|string|max:255',
-            'professional_field' => 'required|string|max:255',
+            'place_of_work' => 'required|string|max:120',
+            'department' => 'nullable|string|max:100',
+            'position' => 'required|string|max:100',
+            'professional_field' => 'required|string|max:120',
             'official_address' => 'nullable|string|max:255',
-            'phone_number' => 'required|string|max:20',
-            'whatsapp_number' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
+            'phone_number' => 'required|string|max:12',
+            'whatsapp_number' => 'required|string|max:12',
+            'email' => 'required|email|max:120',
         ]);
 
         $validated['user_id'] = auth()->id();

@@ -18,27 +18,11 @@ Page name
                         <div class="col-lg-12">
                             <div class="px-lg-4">
                                 <div class="tab-content">
+                                    {{-- personal information --}}
                                     <div class="tab-pane fade show active" id="v-pills-bill-info" role="tabpanel" aria-labelledby="v-pills-bill-info-tab">
                                         <div>
                                             <h5 class="text-primary mb-4 text-center">Personal Information</h5>
                                         </div>
-                                        {{-- ?v={{ time() }} --}}
-                                         {{-- 'title' => 'required|string',
-                                        'first_name' => 'required|string',
-                                        'last_name' => 'required|string',
-                                        'other_name' => 'nullable|string',
-                                        'phone_number' => 'required|numeric|min:11',
-                                        'gender' => 'required|string',
-                                        'marital_status' => 'nullable|string',
-                                        'nationality' => 'required|string',
-                                        'state' => 'required|integer',
-                                        'lga' => 'required|integer',
-                                        'town' => 'nullable|string',
-                                        'date_of_birth' => 'required',
-                                        'place_of_birth' => 'nullable|string',
-                                        'membership_category_id' => 'required|integer',
-                                        'involved_in_hypertension' => 'required|string',
-                                        'hypertension_description' => 'nullable|required_if:involved_in_hypertension,Yes|string', --}}
                                         <div class="form">
                                             @if (!empty(auth()->user()->profile))
                                             <div class="container">
@@ -134,8 +118,7 @@ Page name
                                         </div>
                                     </div>
                                     <!-- end tab pane -->
-                                </div>
-                                <!-- end tab content -->
+
                             </div>
                         </div>
                         <!-- end col -->

@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'membership' => \App\Http\Middleware\VerifyMemberShip::class,
         'verify.profile' => \App\Http\Middleware\ProfileVerification::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'verify.pay' => \App\Http\Middleware\VerifyPayment::class,
     ];
 }

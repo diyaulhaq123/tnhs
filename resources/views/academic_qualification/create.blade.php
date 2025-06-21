@@ -38,12 +38,12 @@ Academic Qualification
                                                 </div>
 
                                                 <div class="col-md-3 col-lg-4 mb-3">
-                                                    <label for="year_start" class="form-label">Start Date</label>
+                                                    <label for="year_start" class="form-label">Start Year</label>
                                                     <input type="number" name="year_start" id="year_start" class="form-control" value="{{ old('year_start', $academicQualification->year_start ?? '') }}">
                                                 </div>
 
                                                 <div class="col-md-3 col-lg-4  mb-3">
-                                                    <label for="year_end" class="form-label">End Date</label>
+                                                    <label for="year_end" class="form-label">End Year</label>
                                                     <input type="number" name="year_end" id="year_end" class="form-control" value="{{ old('year_end', $academicQualification->year_end ?? '') }}">
                                                 </div>
 
@@ -77,8 +77,8 @@ Academic Qualification
                         <tr>
                             <th scope="col">SN</th>
                             <th scope="col">Qualification</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">End Date</th>
+                            <th scope="col">Start Year</th>
+                            <th scope="col">End Year</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>

@@ -37,7 +37,7 @@ class UserController extends Controller
     public function show(Request $request)
     {
         // OrFail
-        $user = User::with('profile','profile.membershipCategory','profile.states','profile.lgas')->find($request->id);
+        $user = User::with('profile','profile.membershipCategory','profile.states','profile.lgas','contactInformation','academicQualifications')->find($request->id);
         // dd($user);
         return view('users.show', compact('user'));
     }
